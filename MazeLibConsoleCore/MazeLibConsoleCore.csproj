@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
+    <RuntimeFrameworkVersion>2.2.0</RuntimeFrameworkVersion>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AnimatedGif" Version="1.0.5" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.2.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MazeLib\MazeLib.csproj" />
+  </ItemGroup>
+</Project>

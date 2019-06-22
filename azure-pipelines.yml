@@ -1,0 +1,52 @@
+
+steps:
+- task: DotNetCoreInstaller@0
+  displayName: Use .NET Core sdk 2.2.203
+  inputs:
+    version: 2.2.203
+
+- task: DotNetCoreCLI@2
+  displayName: dotnet restore
+  inputs:
+    command: restore
+    projects: '**/*.csproj'
+
+- task: DotNetCoreCLI@2
+  displayName: dotnet build
+  inputs:
+    command: build
+    projects: '**/*.csproj'
+
+- task: DotNetCoreCLI@2
+  displayName: dotnet publish netstandard2.0 
+  inputs:
+    command: publish
+    publishWebProjects: false
+    projects: 'MazeLib/MazeLib.csproj'
+    arguments: '--framework netstandard2.0'
+    zipAfterPublish: false
+    modifyOutputPath: false
+
+- task: DotNetCoreCLI@2
+  displayName: dotnet test
+  inputs:
+    command: test
+    projects: '**/*Tests.csproj'
+
+- task: DotNetCoreCLI@2
+  displayName: dotnet pack
+  inputs:
+    command: pack
+    projects: 'MazeLib/MazeLib.csproj'
+    packDirectory: '$(Build.ArtifactStagingDirectory)\$(BuildConfiguration)'
+    versioningScheme: byEnvVar
+    versionEnvVar: VersionNuget
+
+- task: NuGetCommand@2
+  displayName: NuGet push nuget.org
+  condition: eq('$(Deploy)', 'true')
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/MazeLib*.nupkg;!$(Build.ArtifactStagingDirectory)/**/MazeLib*.symbols.nupkg;!$(Build.ArtifactStagingDirectory)/**/MazeLibConsole*.nupkg'
+    nuGetFeedType: 'external'
+    publishFeedCredentials: 'Nuget.org'

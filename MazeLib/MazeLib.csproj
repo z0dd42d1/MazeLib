@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
+    <RuntimeFrameworkVersion>2.2.0</RuntimeFrameworkVersion>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>MazeLib</AssemblyName>
+    <RootNamespace>MazeLib</RootNamespace>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <Version>0.1.1-alpha</Version>
+    <Copyright>Stefan Friedl</Copyright>
+    <PackageLicenseExpression />
+    <PackageLicenseFile>license.txt</PackageLicenseFile>
+    <Description>A libary for maze generation.</Description>
+    <Authors>Stefan Friedl</Authors>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="license.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+</Project>

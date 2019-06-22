@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MazeLibConsoleCore": {
+      "commandName": "Project",
+      "commandLineArgs": "--CreateDemoImages=true"
+    }
+  }
+}
