@@ -3,7 +3,7 @@
 This lib intends to provide easy methods to generate 2D mazes.
 It will be further expanded in the future.
 
-The libary and its interfaces are not stable at the moment (alpha version).
+**The libary and its interfaces are not stable at the moment (alpha version).**
 
 
 ## How to use this libary
@@ -32,7 +32,8 @@ Save it as a image:
 MazeImageCreator.CreateMazeImage(maze, "filename", 10, "./");
 ```
 
-Example Result:
+Example Results:
+
 ![BinaryTree](https://raw.githubusercontent.com/z0dd42d1/MazeLib/master/Documentation/BinaryTree.png)
 
 ![DepthFirst](https://raw.githubusercontent.com/z0dd42d1/MazeLib/master/Documentation/DepthFirst.png)
