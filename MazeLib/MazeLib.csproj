@@ -14,10 +14,10 @@
     <Description>A libary for maze generation.</Description>
     <Authors>Stefan Friedl</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <RepositoryUrl>https://github.com/z0dd42d1/MazeLib</RepositoryUrl>
+    <RepositoryUrl>https://github.com/z0dd42d1/MazeLib/tree/master/MazeLib</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>Maze generation</PackageTags>
-    <PackageProjectUrl>https://github.com/z0dd42d1/MazeLib</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/z0dd42d1/MazeLib/tree/master/MazeLib</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
