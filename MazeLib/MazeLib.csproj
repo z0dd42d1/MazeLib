@@ -10,16 +10,24 @@
     <Version>0.1.1-alpha</Version>
     <Copyright>Stefan Friedl</Copyright>
     <PackageLicenseExpression />
-    <PackageLicenseFile>license.txt</PackageLicenseFile>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <Description>A libary for maze generation.</Description>
     <Authors>Stefan Friedl</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <RepositoryUrl>https://github.com/z0dd42d1/MazeLib</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>Maze generation</PackageTags>
+    <PackageProjectUrl>https://github.com/z0dd42d1/MazeLib</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="license.txt">
+    <None Remove="LICENSE.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="LICENSE.md">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
-    </None>
+    </Content>
   </ItemGroup>
 </Project>
