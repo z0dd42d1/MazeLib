@@ -44,7 +44,6 @@ steps:
 
 - task: NuGetCommand@2
   displayName: NuGet push nuget.org
-  condition: eq('variables['Deploy]', 'true')
   inputs:
     command: 'push'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/**/MazeLib*.nupkg;!$(Build.ArtifactStagingDirectory)/**/MazeLib*.symbols.nupkg;!$(Build.ArtifactStagingDirectory)/**/MazeLibConsole*.nupkg'
