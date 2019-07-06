@@ -25,6 +25,9 @@ namespace MazeLib.Base
         /// </summary>
         TileMapMaze GetInitializedMaze();
 
+        /// <summary>
+        /// Sets the maze object which will be transformed by the algorithm.
+        /// </summary>
         void SetCurrentMaze(TileMapMaze maze);
 
         /// <summary>

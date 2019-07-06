@@ -28,7 +28,7 @@ namespace MazeLibConsoleCore
                         .SetMazeAlgorithm(i)
                         .Build();
 
-                    MazeImageCreator.CreateMazeImage(maze, i.GetName());
+                    MazeImageCreator.CreateMazeImage(maze, i.GetName(), 10);
                 }
             }
         }
@@ -47,7 +47,7 @@ namespace MazeLibConsoleCore
                 {
                     var transforms = algo.GenerateMazeFullSize();
 
-                    MazeImageCreator.CreateMazeImage(algo.GetCurrentMaze(), algo.GetName());
+                    MazeImageCreator.CreateMazeImage(algo.GetCurrentMaze(), algo.GetName(), 10);
 
                     //PrintMaze(algo.GetGeneratedMaze());
                     //Console.ReadKey();

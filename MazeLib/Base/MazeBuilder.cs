@@ -6,7 +6,7 @@ using System.Text;
 
 namespace MazeLib.Base
 {
-    public class MazeBuilder
+    public class MazeBuilder : IMazeBuilder
     {
         private MazeGenAlgorithmBase algo;
         private Action<MazeTransformationStep> drawCallback;

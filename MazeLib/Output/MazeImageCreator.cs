@@ -5,13 +5,11 @@ using System.Text;
 using System.Drawing;
 using System.Drawing.Imaging;
 
-namespace MazeLibConsoleCore
+namespace MazeLib
 {
-    internal class MazeImageCreator
+    public class MazeImageCreator
     {
-        private static int tilesize = 10;
-
-        public static void CreateMazeImage(IMaze maze, string label)
+        public static void CreateMazeImage(IMaze maze, string label, int tilesize)
         {
             using (var image = new Bitmap(tilesize * maze.GetWidth(), tilesize * maze.GetHeight()))
             {
