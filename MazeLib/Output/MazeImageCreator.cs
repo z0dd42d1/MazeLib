@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 
 namespace MazeLib
 {
     public class MazeImageCreator
     {
-        public static void CreateMazeImage(IMaze maze, string label, int tilesize)
+        public static void CreateMazeImage(IMaze maze, string label, int tilesize, string targetPath)
         {
             using (var image = new Bitmap(tilesize * maze.GetWidth(), tilesize * maze.GetHeight()))
             {
@@ -51,8 +52,7 @@ namespace MazeLib
                             graphics.FillRectangle(currentBrush, rect);
                         }
                     }
-
-                    image.Save($"./{label}.png", ImageFormat.Png);
+                    image.Save(Path.Combine(targetPath, $"{label}.png"), ImageFormat.Png);
                 }
             }
         }
