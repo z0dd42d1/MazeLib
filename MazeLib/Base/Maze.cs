@@ -68,37 +68,31 @@ namespace MazeLib.Base
             mazefield[step.coordinate.x][step.coordinate.y].type = step.typeAfterTransform;
         }
 
-        public Task OverrideAllMazeFields(MazeFieldType defaultType = MazeFieldType.Corridor)
+        public void OverrideAllMazeFields(MazeFieldType defaultType = MazeFieldType.Corridor)
         {
-            return Task.Run(() =>
+            for (int w = 0; w < width; w++)
             {
-                for (int w = 0; w < width; w++)
+                for (int h = 0; h < height; h++)
                 {
-                    for (int h = 0; h < height; h++)
-                    {
-                        mazefield[w][h].type = defaultType;
-                    }
+                    mazefield[w][h].type = defaultType;
                 }
-            });
+            }
         }
 
-        internal Task MakeRectangle(MazeCoordinate upperleft, MazeCoordinate downright, MazeFieldType defaultType = MazeFieldType.Wall)
+        internal void MakeRectangle(MazeCoordinate upperleft, MazeCoordinate downright, MazeFieldType defaultType = MazeFieldType.Wall)
         {
-            return Task.Run(() =>
-            {
-                int i;
-                for (i = 0; i < this.height; i++)
-                { // Left / Right walls
-                    this.SetMazeTypeOnPos(upperleft.x, upperleft.y - i, defaultType);
-                    this.SetMazeTypeOnPos(downright.x, upperleft.y - i, defaultType);
-                }
+            int i;
+            for (i = 0; i < this.height; i++)
+            { // Left / Right walls
+                this.SetMazeTypeOnPos(upperleft.x, upperleft.y - i, defaultType);
+                this.SetMazeTypeOnPos(downright.x, upperleft.y - i, defaultType);
+            }
 
-                for (i = 0; i < this.width; i++)
-                { // Top / Bottom walls
-                    this.SetMazeTypeOnPos(upperleft.x + i, upperleft.y, defaultType);
-                    this.SetMazeTypeOnPos(upperleft.x + i, downright.y, defaultType);
-                }
-            });
+            for (i = 0; i < this.width; i++)
+            { // Top / Bottom walls
+                this.SetMazeTypeOnPos(upperleft.x + i, upperleft.y, defaultType);
+                this.SetMazeTypeOnPos(upperleft.x + i, downright.y, defaultType);
+            }
         }
     }
 }
