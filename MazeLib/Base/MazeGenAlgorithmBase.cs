@@ -38,7 +38,7 @@ namespace MazeLib.Base
             this.drawCallback = action;
         }
 
-        public abstract TileMapMaze GetInitializedMaze();
+        public abstract void InitializeMaze();
 
         public abstract string GetName();
 

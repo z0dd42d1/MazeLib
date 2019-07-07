@@ -37,7 +37,7 @@ namespace MazeLibTests
                 {
                     sw.Start();
 
-                    var transforms = algo.GenerateMazeFullSize();
+                    algo.GenerateMazeFullSize();
 
                     sw.Stop();
                     tests[i] = sw.ElapsedTicks;

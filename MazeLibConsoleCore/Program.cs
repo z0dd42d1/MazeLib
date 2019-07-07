@@ -13,22 +13,28 @@ namespace MazeLibConsoleCore
 {
     internal class Program
     {
-        private static async Task Main(string[] args)
+        private static void Main(string[] args)
         {
             var configB = new ConfigurationBuilder();
             var configRoot = configB.AddCommandLine(args).Build();
 
             if (configRoot["CreateDemoImages"] != null)
             {
-                var list = KnownMazesTypes.GetAllMazeAlgos();
-                foreach (IMazeGenAlgorithm i in list)
-                {
-                    MazeBuilder mazeBuilder = new MazeBuilder();
-                    var maze = mazeBuilder
-                        .SetMazeAlgorithm(i)
-                        .Build();
+                bool run = configRoot["InfiniteDemo"] != null ? true : false;
 
-                    MazeImageCreator.CreateMazeImage(maze, i.GetName(), 10, "./");
+                while (run)
+                {
+                    var list = KnownMazesTypes.GetAllMazeAlgos();
+                    foreach (IMazeGenAlgorithm i in list)
+                    {
+                        MazeBuilder mazeBuilder = new MazeBuilder();
+                        var maze = mazeBuilder
+                            .SetMazeAlgorithm(i)
+                            .Build();
+
+                        MazeImageCreator.CreateMazeImage(maze, i.GetName(), 10, "./");
+                    }
+                    Console.ReadKey();
                 }
             }
         }
@@ -42,16 +48,16 @@ namespace MazeLibConsoleCore
                 var algo = new DepthFirst();
                 algo.SetCurrentMaze(maze);
 
-                await maze.OverrideAllMazeFields();
+                maze.OverrideAllMazeFields();
                 while (true)
                 {
-                    var transforms = algo.GenerateMazeFullSize();
+                    algo.GenerateMazeFullSize();
 
                     MazeImageCreator.CreateMazeImage(algo.GetCurrentMaze(), algo.GetName(), 10, "./");
 
                     //PrintMaze(algo.GetGeneratedMaze());
                     //Console.ReadKey();
-                    PrintMaze(algo.GetInitializedMaze(), transforms);
+                    //PrintMaze(algo.InitializeMaze(), transforms);
                 }
             }
             catch (Exception e)

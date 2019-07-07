@@ -24,7 +24,7 @@ namespace MazeLib.MazeGenAlgos
 
         public override IList<MazeTransformationStep> GenerateMazeFullSize()
         {
-            this.SetCurrentMaze(GetInitializedMaze());
+            InitializeMaze();
 
             return InternalGenerateMazeFullSize().ToList();
         }
@@ -119,14 +119,12 @@ namespace MazeLib.MazeGenAlgos
             return true;
         }
 
-        public override TileMapMaze GetInitializedMaze()
+        public override void InitializeMaze()
         {
             downright = new MazeCoordinate(currentMaze.GetWidth() - 1, 0);
             upperleft = new MazeCoordinate(0, currentMaze.GetHeight() - 1);
 
-            var maze = new TileMapMaze(currentMaze.GetWidth(), currentMaze.GetHeight());
-            maze.OverrideAllMazeFields(MazeFieldType.Wall);
-            return maze;
+            currentMaze.OverrideAllMazeFields(MazeFieldType.Wall);
         }
 
         internal override MazeTransformationStep PlaceEntrance()

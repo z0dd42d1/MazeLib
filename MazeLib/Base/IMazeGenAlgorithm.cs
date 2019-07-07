@@ -14,16 +14,15 @@ namespace MazeLib.Base
         string GetName();
 
         /// <summary>
-        /// Returns the maze in its current state. Use ist after generating a maze to get the endresult.
+        /// Returns the maze in its current state. Use this after generating a maze to get the endresult.
         /// </summary>
         /// <returns></returns>
         TileMapMaze GetCurrentMaze();
 
         /// <summary>
-        /// Returns a maze object that represents the base for the algoritm to start the generating
-        /// This method is used to skip init step of the maze.
+        /// Initialized the maze for the generation algorithm
         /// </summary>
-        TileMapMaze GetInitializedMaze();
+        void InitializeMaze();
 
         /// <summary>
         /// Sets the maze object which will be transformed by the algorithm.

@@ -15,7 +15,7 @@ namespace MazeLib.MazeGenAlgos
 
         private IEnumerable<MazeTransformationStep> InternalGenerateMazeFullSize()
         {
-            this.SetCurrentMaze(GetInitializedMaze());
+            InitializeMaze();
 
             /*
              * In the wall added version, for each vertex add a wall segment leading down or right, but not both.
@@ -54,6 +54,9 @@ namespace MazeLib.MazeGenAlgos
                     }
                 }
             }
+
+            yield return PlaceEntrance();
+            yield return PlaceExit();
         }
 
         public override string GetName()
@@ -66,24 +69,42 @@ namespace MazeLib.MazeGenAlgos
             return InternalGenerateMazeFullSize().ToList();
         }
 
-        public override TileMapMaze GetInitializedMaze()
+        public override void InitializeMaze()
         {
-            TileMapMaze maze = new TileMapMaze(currentMaze.GetWidth(), currentMaze.GetHeight());
-            maze.OverrideAllMazeFields();
-            downright = new MazeCoordinate(maze.GetWidth() - 1, 0);
-            upperleft = new MazeCoordinate(0, maze.GetHeight() - 1);
-            maze.MakeRectangle(upperleft, downright);
-            return maze;
+            this.currentMaze.OverrideAllMazeFields();
+            downright = new MazeCoordinate(this.currentMaze.GetWidth() - 1, 0);
+            upperleft = new MazeCoordinate(0, this.currentMaze.GetHeight() - 1);
+            this.currentMaze.MakeRectangle(upperleft, downright);
         }
 
         internal override MazeTransformationStep PlaceEntrance()
         {
-            throw new NotImplementedException();
+            // no need to check, the nature of the algorithm will guarantee that all positions on this side are valid entrances.
+            return this.currentMaze.SetMazeTypeOnPos(random.Next(1, currentMaze.GetWidth() - 2), 0, MazeFieldType.Entrance);
         }
 
         internal override MazeTransformationStep PlaceExit()
         {
-            throw new NotImplementedException();
+            List<MazeCoordinate> possibleExits = new List<MazeCoordinate>();
+
+            // collect all possible exits
+            for (int y = currentMaze.GetHeight() - 2; y >= currentMaze.GetHeight() / 2; y--)
+            {
+                possibleExits.Add(new MazeCoordinate(0, y));
+            }
+
+            // check in random order if exit is valid
+            while (possibleExits.Count > 0)
+            {
+                var possibleExit = possibleExits.ElementAt(random.Next(possibleExits.Count));
+
+                if (this.currentMaze.GetMazeTypeOnPos(1, possibleExit.y) == MazeFieldType.Corridor)
+                {
+                    return this.currentMaze.SetMazeTypeOnPos(0, possibleExit.y, MazeFieldType.Exit);
+                }
+            }
+
+            throw new Exception("Could not place a valid exit.");
         }
     }
 }
