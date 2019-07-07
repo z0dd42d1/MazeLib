@@ -21,28 +21,32 @@ namespace MazeLib.MazeGenAlgos
              * In the wall added version, for each vertex add a wall segment leading down or right, but not both.
              */
 
-            for (int y = 1; y < this.GetMazeHeight() - 3; y += 2)
+            for (int y = 1; y < this.GetMazeHeight() - 2; y += 2)
             {
-                for (int x = 1; x < this.GetMazeWidth() - 3; x += 2)
+                for (int x = 1; x < this.GetMazeWidth() - 2; x += 2)
                 {
                     switch (random.Next(2))
                     {
-                        case 0: // new wall dow
-
-                            // TODO maze is not very pretty when h/w is an even number, must be fixed
-                            //if (upperleft.y - y < this.currentMaze.GetHeight() - 3)
-                            // {
-                            yield return this.currentMaze.SetMazeTypeOnPos(upperleft.x + x + 1, upperleft.y - y, MazeFieldType.Wall);
-                            yield return this.currentMaze.SetMazeTypeOnPos(upperleft.x + x + 1, upperleft.y - y - 1, MazeFieldType.Wall);
-                            // }
+                        case 0: // new wall down
+                            if (downright.x - x > 2) // don't draw new wall downward on the outer edge
+                            {
+                                yield return this.currentMaze.SetMazeTypeOnPos(upperleft.x + x + 1, upperleft.y - y, MazeFieldType.Wall);
+                                if (upperleft.y - y > 2) // don't close corridors to the outer walls
+                                {
+                                    yield return this.currentMaze.SetMazeTypeOnPos(upperleft.x + x + 1, upperleft.y - y - 1, MazeFieldType.Wall);
+                                }
+                            }
                             break;
 
-                        case 1:// new wall right
-                               //if (upperleft.x + x + 1 < this.currentMaze.GetWidth() - 3)
-                               // {
-                            yield return this.currentMaze.SetMazeTypeOnPos(upperleft.x + x, upperleft.y - (y + 1), MazeFieldType.Wall);
-                            yield return this.currentMaze.SetMazeTypeOnPos(upperleft.x + x + 1, upperleft.y - (y + 1), MazeFieldType.Wall);
-                            // }
+                        case 1:
+                            if (upperleft.y - y > 2) // don't draw new wall horizontal on the outer edge
+                            {
+                                yield return this.currentMaze.SetMazeTypeOnPos(upperleft.x + x, upperleft.y - (y + 1), MazeFieldType.Wall);
+                                if (downright.x - x > 2) // don't close corridors to the outer walls
+                                {
+                                    yield return this.currentMaze.SetMazeTypeOnPos(upperleft.x + x + 1, upperleft.y - (y + 1), MazeFieldType.Wall);
+                                }
+                            }
                             break;
 
                         default:
