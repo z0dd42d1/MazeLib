@@ -3,12 +3,12 @@
 This lib intends to provide easy methods to generate 2D mazes.
 It will be further expanded in the future.
 
-**The libary and its interfaces are not stable at the moment (alpha version).**
+**The library and its interfaces are not stable at the moment (alpha version).**
 
 
 ## How to use this libary
 
-Create a maze object with the builder pattern (Parameters all pre definded):
+Create a maze object with the builder pattern (Parameters all predefined):
 ```
     MazeBuilder mazeBuilder = new MazeBuilder();
     var maze = mazeBuilder
@@ -17,12 +17,12 @@ Create a maze object with the builder pattern (Parameters all pre definded):
 
 Create a maze object with the builder pattern (Customized parameters):
 ```
-            MazeBuilder mazeBuilder = new MazeBuilder();
-            var maze = mazeBuilder
-                .SetMazeAlgorithm(new DepthFirst())
-                .SetMazeDimensions(200,200)
-                .SetDrawCallback(t => DrawTile(t.coordinate.x,t.coordinate.y,t.typeAfterTransform))
-                .Build();
+    MazeBuilder mazeBuilder = new MazeBuilder();
+    var maze = mazeBuilder
+        .SetMazeAlgorithm(new DepthFirst())
+        .SetMazeDimensions(200,200)
+        .SetDrawCallback(t => DrawTile(t.coordinate.x,t.coordinate.y,t.typeAfterTransform))
+        .Build();
 ```
 
 
@@ -33,6 +33,9 @@ MazeImageCreator.CreateMazeImage(maze, "filename", 10, "./");
 ```
 
 Example Results:
+
+Green Tile: Exit
+Red Tile: Entrance
 
 ![BinaryTree](https://raw.githubusercontent.com/z0dd42d1/MazeLib/master/Documentation/BinaryTree.png)
 

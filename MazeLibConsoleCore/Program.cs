@@ -30,6 +30,7 @@ namespace MazeLibConsoleCore
                         MazeBuilder mazeBuilder = new MazeBuilder();
                         var maze = mazeBuilder
                             .SetMazeAlgorithm(i)
+                            .SetMazeDimensions(61, 61)
                             .Build();
 
                         MazeImageCreator.CreateMazeImage(maze, i.GetName(), 10, "./");
