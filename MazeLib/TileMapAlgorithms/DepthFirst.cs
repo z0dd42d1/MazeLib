@@ -15,6 +15,7 @@ namespace MazeLib.MazeGenAlgos
         private List<MazeCoordinate> possibleWays = new List<MazeCoordinate>();
 
         private Random random = new Random();
+        private MazeCoordinate entrance;
 
         public override string GetName()
         {
@@ -30,7 +31,7 @@ namespace MazeLib.MazeGenAlgos
 
         private IEnumerable<MazeTransformationStep> InternalGenerateMazeFullSize()
         {
-            var entrance = new MazeCoordinate(upperleft.x + 1 + random.Next(this.currentMaze.GetWidth() - 2), upperleft.y);
+            entrance = new MazeCoordinate(upperleft.x + 1 + random.Next(this.currentMaze.GetWidth() - 2), upperleft.y);
 
             pointStack.Push(entrance);
 
@@ -53,7 +54,8 @@ namespace MazeLib.MazeGenAlgos
                 }
             }
 
-            yield return this.currentMaze.SetMazeTypeOnPos(entrance, MazeFieldType.Entrance);
+            yield return PlaceEntrance();
+            yield return PlaceExit();
         }
 
         private Nullable<MazeCoordinate> FindWay()
@@ -94,11 +96,11 @@ namespace MazeLib.MazeGenAlgos
             if (point.y >= upperleft.y || point.y <= downright.y)
                 return false;
 
-            //Allready somethin other than a wall?
+            // Already something other than a wall?
             if (this.currentMaze.GetMazeTypeOnPos(point) != MazeFieldType.Wall)
                 return false;
 
-            // Make sure we do not create a way throu a wall.
+            // Make sure we do not create a way through a wall.
             MazeCoordinate up = new MazeCoordinate(point.x, point.y - 1);
             MazeCoordinate right = new MazeCoordinate(point.x + 1, point.y);
             MazeCoordinate down = new MazeCoordinate(point.x, point.y + 1);
@@ -127,14 +129,39 @@ namespace MazeLib.MazeGenAlgos
             return maze;
         }
 
-        internal override void PlaceEntrance()
+        internal override MazeTransformationStep PlaceEntrance()
         {
-            throw new NotImplementedException();
+            // the entrance is placed during maze generation. This algorithm doesn't not need an extra handling.
+            return this.currentMaze.SetMazeTypeOnPos(entrance, MazeFieldType.Entrance);
         }
 
-        internal override void PlaceExit()
+        internal override MazeTransformationStep PlaceExit()
         {
-            throw new NotImplementedException();
+            List<MazeCoordinate> possibleExits = new List<MazeCoordinate>();
+
+            // collect all possible exits
+            for (int i = currentMaze.GetWidth() - 2; i >= 1; i--)
+            {
+                possibleExits.Add(new MazeCoordinate(i, downright.y));
+            }
+
+            // check in random order if exit is valid
+            while (possibleExits.Count > 0)
+            {
+                var possibleExit = possibleExits.ElementAt(random.Next(possibleExits.Count));
+
+                if (currentMaze.GetMazeTypeOnPos(possibleExit.x, possibleExit.y + 1) == MazeFieldType.Corridor)
+                {
+                    return currentMaze.SetMazeTypeOnPos(possibleExit, MazeFieldType.Exit);
+                }
+                else
+                {
+                    possibleExits.Remove(possibleExit);
+                }
+            }
+
+            // TODO Maybe not the best way to handle this, but the maze is useless without valid exit.
+            throw new Exception("Could not find a suitable exit position.");
         }
     }
 }

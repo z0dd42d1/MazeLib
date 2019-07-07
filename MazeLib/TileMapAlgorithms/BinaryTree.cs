@@ -72,12 +72,12 @@ namespace MazeLib.MazeGenAlgos
             return maze;
         }
 
-        internal override void PlaceEntrance()
+        internal override MazeTransformationStep PlaceEntrance()
         {
             throw new NotImplementedException();
         }
 
-        internal override void PlaceExit()
+        internal override MazeTransformationStep PlaceExit()
         {
             throw new NotImplementedException();
         }

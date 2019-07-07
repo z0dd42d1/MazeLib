@@ -17,7 +17,7 @@ namespace MazeLib
                 SolidBrush blackBrush = new SolidBrush(Color.Black);
                 SolidBrush whiteBrush = new SolidBrush(Color.White);
                 SolidBrush redBrush = new SolidBrush(Color.Red);
-                SolidBrush blueBrush = new SolidBrush(Color.BlueViolet);
+                SolidBrush greenBrush = new SolidBrush(Color.SpringGreen);
                 SolidBrush currentBrush = blackBrush;
                 using (var graphics = Graphics.FromImage(image))
                 {
@@ -34,7 +34,7 @@ namespace MazeLib
                                     break;
 
                                 case MazeFieldType.Exit:
-                                    currentBrush = blueBrush;
+                                    currentBrush = greenBrush;
                                     break;
 
                                 case MazeFieldType.Entrance:

@@ -42,8 +42,8 @@ namespace MazeLib.Base
 
         public abstract string GetName();
 
-        internal abstract void PlaceEntrance();
+        internal abstract MazeTransformationStep PlaceEntrance();
 
-        internal abstract void PlaceExit();
+        internal abstract MazeTransformationStep PlaceExit();
     }
 }
