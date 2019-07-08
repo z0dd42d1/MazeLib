@@ -1,4 +1,7 @@
 
+#Populate Build.BuildNumber variable
+name: $(rev:.r) 
+
 steps:
 - task: DotNetCoreInstaller@0
   displayName: Use .NET Core sdk 2.2.203
