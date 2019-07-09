@@ -1,5 +1,4 @@
 using MazeLib.Base;
-using MazeLib.MazeGenAlgos;
 using MazeLibTests.Base;
 using Serilog;
 using Serilog.Core;
@@ -10,6 +9,7 @@ using System.Linq;
 using Xunit;
 using Xunit.Abstractions;
 using MathNet.Numerics.Statistics;
+using MazeLib.TileMapAlgorithms;
 
 namespace MazeLibTests
 {
@@ -22,14 +22,14 @@ namespace MazeLibTests
         public object KnownMazeTypes { get; private set; }
 
         [Fact]
-        public void TestPerformanceOfGenAlgos_WithSize100x100_DoesNotThrow()
+        public void TestPerformanceOfGenAlgos_WithSize150x150_DoesNotThrow()
         {
             var mazeGenAlgos = KnownMazesTypes.GetAllMazeAlgos();
             Stopwatch sw = new Stopwatch();
 
             foreach (IMazeGenAlgorithm algo in mazeGenAlgos)
             {
-                var maze = new TileMapMaze(500, 500);
+                var maze = new TileMapMaze(150, 150);
                 algo.SetCurrentMaze(maze);
 
                 double[] tests = new double[10];

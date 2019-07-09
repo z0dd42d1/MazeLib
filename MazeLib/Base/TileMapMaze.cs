@@ -94,5 +94,21 @@ namespace MazeLib.Base
                 this.SetMazeTypeOnPos(upperleft.x + i, downright.y, defaultType);
             }
         }
+
+        /// <summary>
+        /// Determins if the coordinate is within the maze walls.
+        /// </summary>
+        /// <returns>Returns true if point is inside the maze. Returns false when outside or directly on the outer wall.</returns>
+        internal bool IsPointInMaze(MazeCoordinate point)
+        {
+            // Out of the maze?
+            if (point.x <= 0 || point.x >= width - 1)
+                return false;
+
+            if (point.y >= height - 1 || point.y <= 0)
+                return false;
+
+            return true;
+        }
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MazeLib.MazeGenAlgos
+namespace MazeLib.TileMapAlgorithms
 {
     public class DepthFirst : MazeGenAlgorithmBase
     {
@@ -89,12 +89,7 @@ namespace MazeLib.MazeGenAlgos
 
         private bool IsValidWay(MazeCoordinate point, MazeCoordinate comeFrom)
         {
-            // Out of the maze?
-            if (point.x <= upperleft.x || point.x >= downright.x)
-                return false;
-
-            if (point.y >= upperleft.y || point.y <= downright.y)
-                return false;
+            if (!this.currentMaze.IsPointInMaze(point)) return false;
 
             // Already something other than a wall?
             if (this.currentMaze.GetMazeTypeOnPos(point) != MazeFieldType.Wall)

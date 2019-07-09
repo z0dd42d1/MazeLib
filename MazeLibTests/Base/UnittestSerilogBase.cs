@@ -1,9 +1,5 @@
 ﻿using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit.Abstractions;
-using Xunit;
 
 namespace MazeLibTests.Base
 {

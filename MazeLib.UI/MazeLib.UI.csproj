@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp2.1</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.2</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Models\" />
@@ -17,5 +17,8 @@
     <PackageReference Include="Avalonia" Version="0.8.0" />
     <PackageReference Include="Avalonia.Desktop" Version="0.8.0" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.8.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MazeLib\MazeLib.csproj" />
   </ItemGroup>
 </Project>

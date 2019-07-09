@@ -1,5 +1,5 @@
 ﻿using MazeLib.Base;
-using MazeLib.MazeGenAlgos;
+using MazeLib.TileMapAlgorithms;
 using System;
 using System.Collections.Generic;
 using System.Text;
