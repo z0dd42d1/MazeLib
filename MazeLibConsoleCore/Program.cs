@@ -1,6 +1,6 @@
 ﻿using MazeLib;
 using MazeLib.Base;
-using MazeLib.MazeGenAlgos;
+using MazeLib.TileMapAlgorithms;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
