@@ -1,6 +1,6 @@
 
 #Populate Build.BuildNumber variable
-name: $(rev:.r) 
+name: $(rev:r) 
 
 steps:
 - task: DotNetCoreInstaller@0
