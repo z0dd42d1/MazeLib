@@ -35,8 +35,15 @@ MazeImageCreator.CreateMazeImage(maze, "filename", 10, "./");
 Example Results:
 
 Green Tile: Exit
+
 Red Tile: Entrance
+
 
 ![BinaryTree](https://raw.githubusercontent.com/z0dd42d1/MazeLib/master/Documentation/BinaryTree.png)
 
 ![DepthFirst](https://raw.githubusercontent.com/z0dd42d1/MazeLib/master/Documentation/DepthFirst.png)
+
+![DepthFirst](https://raw.githubusercontent.com/z0dd42d1/MazeLib/master/Documentation/RandomizedPrims.png)
+
+Algorithms implemented as described on https://en.wikipedia.org/wiki/Maze_generation_algorithm
+The implementation does not aim to be precise, but to reliable generate characteristic maze types.
