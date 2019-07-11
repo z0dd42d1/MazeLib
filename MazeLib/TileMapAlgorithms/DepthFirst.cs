@@ -14,7 +14,6 @@ namespace MazeLib.TileMapAlgorithms
         private Stack<MazeCoordinate> pointStack = new Stack<MazeCoordinate>();
         private List<MazeCoordinate> possibleWays = new List<MazeCoordinate>();
 
-        private Random random = new Random();
         private MazeCoordinate entrance;
 
         public override string GetName()
@@ -54,8 +53,8 @@ namespace MazeLib.TileMapAlgorithms
                 }
             }
 
-            yield return PlaceEntrance();
-            yield return PlaceExit();
+            yield return TryPlaceEntrance();
+            yield return TryPlaceExit();
         }
 
         private Nullable<MazeCoordinate> FindWay()
@@ -122,13 +121,13 @@ namespace MazeLib.TileMapAlgorithms
             currentMaze.OverrideAllMazeFields(MazeFieldType.Wall);
         }
 
-        internal override MazeTransformationStep PlaceEntrance()
+        internal override MazeTransformationStep TryPlaceEntrance()
         {
             // the entrance is placed during maze generation. This algorithm doesn't not need an extra handling.
             return this.currentMaze.SetMazeTypeOnPos(entrance, MazeFieldType.Entrance);
         }
 
-        internal override MazeTransformationStep PlaceExit()
+        internal override MazeTransformationStep TryPlaceExit()
         {
             List<MazeCoordinate> possibleExits = new List<MazeCoordinate>();
 

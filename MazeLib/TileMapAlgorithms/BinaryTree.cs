@@ -9,7 +9,6 @@ namespace MazeLib.TileMapAlgorithms
 {
     public class BinaryTree : MazeGenAlgorithmBase
     {
-        private Random random = new Random();
         private MazeCoordinate downright;
         private MazeCoordinate upperleft;
 
@@ -55,8 +54,8 @@ namespace MazeLib.TileMapAlgorithms
                 }
             }
 
-            yield return PlaceEntrance();
-            yield return PlaceExit();
+            yield return TryPlaceEntrance();
+            yield return TryPlaceExit();
         }
 
         public override string GetName()
@@ -77,13 +76,13 @@ namespace MazeLib.TileMapAlgorithms
             this.currentMaze.MakeRectangle(upperleft, downright);
         }
 
-        internal override MazeTransformationStep PlaceEntrance()
+        internal override MazeTransformationStep TryPlaceEntrance()
         {
             // no need to check, the nature of the algorithm will guarantee that all positions on this side are valid entrances.
             return this.currentMaze.SetMazeTypeOnPos(random.Next(1, currentMaze.GetWidth() - 2), 0, MazeFieldType.Entrance);
         }
 
-        internal override MazeTransformationStep PlaceExit()
+        internal override MazeTransformationStep TryPlaceExit()
         {
             List<MazeCoordinate> possibleExits = new List<MazeCoordinate>();
 

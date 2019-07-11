@@ -53,5 +53,17 @@ namespace MazeLib.Base
               o.x == this.x &&
               o.y == this.y;
         }
+
+        /// <summary>
+        /// Checks if this coordinate is directly adjacent to the passed tile
+        /// on the horizontal or vertical axis.
+        /// </summary>
+        public bool IsAdjacentTo(MazeCoordinate coordinate)
+        {
+            // Directly adjacent to each other on x-Axis OR on y-Axis.
+            return (this.x == coordinate.x && Math.Abs(this.y - coordinate.y) == 1) ||
+                (this.y == coordinate.y && Math.Abs(this.x - coordinate.x) == 1)
+                ;
+        }
     }
 }

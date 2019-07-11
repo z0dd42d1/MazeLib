@@ -20,13 +20,7 @@ namespace MazeLib.TileMapAlgorithms
     // TODO translate german code commenting
     public class RandomizedPrims : MazeGenAlgorithmBase
     {
-        private Random random = new Random();
-
-        private MazeCoordinate upperleft;
-        private MazeCoordinate downright;
-
         private MazeCoordinate entrance;
-        private MazeCoordinate exit;
 
         private HashSet<MazeCoordinate> VisitedList;
         private HashSet<MazeCoordinate> WallsList;
@@ -62,14 +56,12 @@ namespace MazeLib.TileMapAlgorithms
                 rand = random.Next(WallsList.Count);
                 temp = WallsList.ElementAt(rand);
 
-                // choose direction to check first
-                bool horizontal = random.Next(1) == 0 ? true : false;
-
-                // If the wall does not devides two cells
+                // If the wall does not divide two cells
                 if (!checkIfWallDividesTwoCorridors(temp))
                 {
                     VisitedList.Add(temp);
 
+                    // make the wall a passage
                     this.currentMaze.SetMazeTypeOnPos(temp, MazeFieldType.Corridor);
                     WallsList.Remove(temp);
 
@@ -81,7 +73,8 @@ namespace MazeLib.TileMapAlgorithms
                 }
             }
 
-            // createEntranceExit();
+            TryPlaceExit();
+            TryPlaceEntrance();
         }
 
         public override string GetName()
@@ -91,32 +84,19 @@ namespace MazeLib.TileMapAlgorithms
 
         public override void InitializeMaze()
         {
-            downright = new MazeCoordinate(currentMaze.GetWidth() - 1, 0);
-            upperleft = new MazeCoordinate(0, currentMaze.GetHeight() - 1);
-
             currentMaze.OverrideAllMazeFields(MazeFieldType.Wall);
-        }
-
-        internal override MazeTransformationStep PlaceEntrance()
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override MazeTransformationStep PlaceExit()
-        {
-            throw new NotImplementedException();
         }
 
         private void addSourroundingWallsToWallList(MazeCoordinate akt)
         {
-            MazeCoordinate[] temp = new MazeCoordinate[4];
+            MazeCoordinate[] temp = new MazeCoordinate[8];
 
             temp[0] = new MazeCoordinate(akt.x, akt.y - 1); // hoch
-            temp[1] = new MazeCoordinate(akt.x + 1, akt.y); // rechts
-            temp[2] = new MazeCoordinate(akt.x - 1, akt.y); // links
-            temp[3] = new MazeCoordinate(akt.x, akt.y + 1); // runter
+            temp[3] = new MazeCoordinate(akt.x + 1, akt.y); // rechts
+            temp[4] = new MazeCoordinate(akt.x - 1, akt.y); // links
+            temp[5] = new MazeCoordinate(akt.x, akt.y + 1); // runter
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < temp.Length; i++)
             {
                 if (this.currentMaze.IsPointInMaze(temp[i]))
                     if (!VisitedList.Contains(temp[i])) // Noch kein teil des Labyrinths?
@@ -129,13 +109,28 @@ namespace MazeLib.TileMapAlgorithms
 
         private bool checkIfWallDividesTwoCorridors(MazeCoordinate akt)
         {
-            // checkt ob mehr als eine Zelle ein Hallway ist, wenn ja gibt er false zur�ck
-            // wenn nein true
+            var temp = new MazeCoordinate[4];
+            // will the new coordinate create a path?
+            temp[0] = new MazeCoordinate(akt.x, akt.y - 1); // hoch
+            temp[1] = new MazeCoordinate(akt.x + 1, akt.y); // rechts
+            temp[2] = new MazeCoordinate(akt.x - 1, akt.y); // links
+            temp[3] = new MazeCoordinate(akt.x, akt.y + 1); // runter
 
-            int zaehler = 0;
-            MazeCoordinate[] temp = new MazeCoordinate[8];
+            int TargetWallAlignsWithCorridors = 0;
+            foreach (MazeCoordinate c in temp)
+            {
+                if (this.currentMaze.GetMazeTypeOnPos(c) == MazeFieldType.Corridor)
+                    if (akt.x == c.x || akt.y == c.y)
+                    {
+                        TargetWallAlignsWithCorridors++;
+                    }
+            }
 
-            // TODO dont use new, get them from the maze array directly
+            // direct connection
+            if (TargetWallAlignsWithCorridors > 2) return true;
+
+            temp = new MazeCoordinate[8];
+
             temp[0] = new MazeCoordinate(akt.x, akt.y - 1); // hoch
             temp[1] = new MazeCoordinate(akt.x + 1, akt.y - 1); // hoch rechts
             temp[2] = new MazeCoordinate(akt.x - 1, akt.y - 1); // hoch links
@@ -145,38 +140,69 @@ namespace MazeLib.TileMapAlgorithms
             temp[6] = new MazeCoordinate(akt.x + 1, akt.y + 1); // runter rechts
             temp[7] = new MazeCoordinate(akt.x - 1, akt.y + 1); // runter links
 
-            for (int i = 0; i < temp.Length; i++)
+            int CorridorFieldsInCloseProximity = 0;
+            HashSet<MazeCoordinate> inProximity = new HashSet<MazeCoordinate>();
+            foreach (MazeCoordinate c in temp)
             {
-                if (VisitedList.Contains(temp[i])) zaehler++;
+                if (currentMaze.GetMazeTypeOnPos(c) != MazeFieldType.Wall)
+                {
+                    CorridorFieldsInCloseProximity++;
+                    inProximity.Add(c);
+                }
+            }
+            // This value can be reduced to create more narrow sideways, maybe make it configurable ?
+            if (CorridorFieldsInCloseProximity >= 3)
+            {
+                return true;
             }
 
-            return zaehler >= 3;
+            if (CorridorFieldsInCloseProximity == 2)
+            {
+                // check if the corridors are adjacent each other then its ok.
+                foreach (MazeCoordinate c in inProximity)
+                {
+                    var subset = inProximity.Where(x => x != c).AsEnumerable();
+                    bool allAdjacent = subset.All(x => x.IsAdjacentTo(c));
+                    if (allAdjacent)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            if (TargetWallAlignsWithCorridors > 1 && CorridorFieldsInCloseProximity >= 2)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         private void AddToWallList(MazeCoordinate akt)
         {
-            //
-            //Pr�fe alle 4 M�glichkeiten und added sie zu der wall-list wenn sie den bedienungen gen�gen
-            //
-            MazeCoordinate[] temp = new MazeCoordinate[4];
+            // TODO Refactor
+
+            MazeCoordinate[] temp = new MazeCoordinate[8];
 
             temp[0] = new MazeCoordinate(akt.x, akt.y - 1); // hoch
-            temp[1] = new MazeCoordinate(akt.x + 1, akt.y); // rechts
-            temp[2] = new MazeCoordinate(akt.x - 1, akt.y); // links
-            temp[3] = new MazeCoordinate(akt.x, akt.y + 1); // runter
+            temp[3] = new MazeCoordinate(akt.x + 1, akt.y); // rechts
+            temp[4] = new MazeCoordinate(akt.x - 1, akt.y); // links
+            temp[5] = new MazeCoordinate(akt.x, akt.y + 1); // runter
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < temp.Length; i++)
             {
                 if (this.currentMaze.IsPointInMaze(temp[i]))
 
-                    //if (!VisitedList.Contains(temp[i]))// schon Teil des Labyrinths?
-                    //{
-                    if (!WallsList.Contains(temp[i]))//Noch nicht auf der Liste?
+                    if (!VisitedList.Contains(temp[i]))// schon Teil des Labyrinths?
                     {
-                        WallsList.Add(temp[i]);
+                        if (!WallsList.Contains(temp[i]))//Noch nicht auf der Liste?
+                        {
+                            WallsList.Add(temp[i]);
+                        }
                     }
-
-                //}
             }
         }
     }

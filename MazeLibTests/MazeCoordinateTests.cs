@@ -49,5 +49,35 @@ namespace MazeLibTests
 
             Assert.DoesNotContain(bar, list);
         }
+
+        [Fact]
+        public void MazeCoordinate_IsAdjacentReturnsTrue_ifDirectlyAdjacent()
+        {
+            var foo = new MazeCoordinate(1337, 42);
+            var bar = new MazeCoordinate(1337, 41);
+
+            Assert.True(foo.IsAdjacentTo(bar));
+            Assert.True(bar.IsAdjacentTo(foo));
+        }
+
+        [Fact]
+        public void MazeCoordinate_IsAdjacentReturnsFalse_ifTheSameCoordinate()
+        {
+            var foo = new MazeCoordinate(1337, 42);
+            var bar = new MazeCoordinate(1337, 42);
+
+            Assert.False(foo.IsAdjacentTo(bar));
+            Assert.False(bar.IsAdjacentTo(foo));
+        }
+
+        [Fact]
+        public void MazeCoordinate_IsAdjacentReturnsFalse_ifNotAdjacentVerticalOrHorizontal()
+        {
+            var foo = new MazeCoordinate(1336, 41);
+            var bar = new MazeCoordinate(1337, 42);
+
+            Assert.False(foo.IsAdjacentTo(bar));
+            Assert.False(bar.IsAdjacentTo(foo));
+        }
     }
 }

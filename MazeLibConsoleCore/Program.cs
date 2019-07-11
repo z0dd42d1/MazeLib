@@ -27,9 +27,20 @@ namespace MazeLibConsoleCore
                     var list = KnownMazesTypes.GetAllMazeAlgos();
                     foreach (IMazeGenAlgorithm i in list)
                     {
+                        var drawMaze = new TileMapMaze(61, 61);
+                        drawMaze.OverrideAllMazeFields(MazeFieldType.Wall);
+
                         MazeBuilder mazeBuilder = new MazeBuilder();
                         var maze = mazeBuilder
                             .SetMazeAlgorithm(i)
+                            .SetDrawCallback(m =>
+                            {
+                                if (i is RandomizedPrims)
+                                {
+                                    //drawMaze.TransformMaze(m);
+                                    //MazeImageCreator.CreateMazeImage(drawMaze, i.GetName(), 10, "./");
+                                }
+                            })
                             .SetMazeDimensions(61, 61)
                             .Build();
 

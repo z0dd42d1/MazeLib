@@ -57,9 +57,14 @@ namespace MazeLib.Base
 
         public MazeTransformationStep SetMazeTypeOnPos(int x, int y, MazeFieldType type)
         {
-            var step = new MazeTransformationStep() { coordinate = new MazeCoordinate() { x = x, y = y }, typeAfterTransform = type };
-            mazefield[x][y].type = type;
-            this.drawCallback?.Invoke(step);
+            MazeTransformationStep step = null;
+            if (mazefield[x][y].type != type)
+            {
+                step = new MazeTransformationStep() { coordinate = new MazeCoordinate() { x = x, y = y }, typeAfterTransform = type };
+
+                mazefield[x][y].type = type;
+                this.drawCallback?.Invoke(step);
+            }
             return step;
         }
 
@@ -96,7 +101,7 @@ namespace MazeLib.Base
         }
 
         /// <summary>
-        /// Determins if the coordinate is within the maze walls.
+        /// Determines if the coordinate is within the maze walls.
         /// </summary>
         /// <returns>Returns true if point is inside the maze. Returns false when outside or directly on the outer wall.</returns>
         internal bool IsPointInMaze(MazeCoordinate point)

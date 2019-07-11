@@ -52,6 +52,8 @@ namespace MazeLib
                             graphics.FillRectangle(currentBrush, rect);
                         }
                     }
+                    // Fix output image orientation, the drawing libs use the upper left corner as 0,0 with y going down and x going right.
+                    image.RotateFlip(RotateFlipType.Rotate180FlipX);
                     image.Save(Path.Combine(targetPath, $"{label}.png"), ImageFormat.Png);
                 }
             }
