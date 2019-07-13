@@ -32,18 +32,22 @@ Save it as a image:
 MazeImageCreator.CreateMazeImage(maze, "filename", 10, "./");
 ```
 
-Example Results:
 
-Green Tile: Exit
+## Maze Types
+### Randomized Prims
+<p align="center">
+<img width="305" height="305" src="https://raw.githubusercontent.com/z0dd42d1/MazeLib/master/Documentation/RandomizedPrims.gif">
+</p>
+### Binary Tree
+<p align="center">
+<img width="305" height="305" src="https://raw.githubusercontent.com/z0dd42d1/MazeLib/master/Documentation/BinaryTree.gif">
+</p>
+### Depth First
+<p align="center">
+<img width="305" height="305" src="https://raw.githubusercontent.com/z0dd42d1/MazeLib/master/Documentation/DepthFirst.gif">
+</p>
 
-Red Tile: Entrance
-
-
-![BinaryTree](https://raw.githubusercontent.com/z0dd42d1/MazeLib/master/Documentation/BinaryTree.png)
-
-![DepthFirst](https://raw.githubusercontent.com/z0dd42d1/MazeLib/master/Documentation/DepthFirst.png)
-
-![DepthFirst](https://raw.githubusercontent.com/z0dd42d1/MazeLib/master/Documentation/RandomizedPrims.png)
+Red Tile mark the entrance, green tiles the exit.
 
 Algorithms implemented as described on https://en.wikipedia.org/wiki/Maze_generation_algorithm
 The implementation does not aim to be precise, but to reliable generate characteristic maze types.
