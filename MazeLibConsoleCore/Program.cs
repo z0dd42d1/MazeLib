@@ -38,6 +38,7 @@ namespace MazeLibConsoleCore
                         {
                             tasks.Add(CreateImageAndGifForAlgoAsync(i));
                         }
+                        Task.WaitAll(tasks.ToArray());
 
                         Console.WriteLine("Tap key for another batch.");
                         Console.ReadKey();

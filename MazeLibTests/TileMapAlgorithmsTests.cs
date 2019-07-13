@@ -64,10 +64,12 @@ namespace MazeLibTests
         {
             var mazeBuilder = new MazeBuilder()
                 .SetMazeAlgorithm(mazeGenAlgorithm)
-                .RecordMazeTransformationSteps()
+                .RecordMazeTransformationSteps(true)
                 .SetMazeDimensions(30, 30);
+            mazeBuilder.Build();
 
             var steps = mazeBuilder.GetMazeTransformationSteps();
+            Assert.True(steps.Count > 1);
             Assert.True(steps.Single(x => x.typeAfterTransform.Equals(MazeFieldType.Exit)) != null);
             Assert.True(steps.Single(x => x.typeAfterTransform.Equals(MazeFieldType.Entrance)) != null);
         }
