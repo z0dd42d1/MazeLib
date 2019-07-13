@@ -33,10 +33,11 @@ MazeImageCreator.CreateMazeImage(maze, "filename", 10, "./");
 ```
 
 
-|                |                |             |
-|:---------------|:---------------|-------------|
-| RandomizedPrims: <img align="left"  width="305" height="305" src="https://raw.githubusercontent.com/z0dd42d1/MazeLib/master/Documentation/RandomizedPrims.gif" title="RandomizedPrim">| BinaryTree:   <img align="left"  width="305" height="305" src="https://raw.githubusercontent.com/z0dd42d1/MazeLib/master/Documentation/BinaryTree.gif" title="BinaryTree">
-| DepthFirst:  <img align="left"  width="305" height="305" src="https://raw.githubusercontent.com/z0dd42d1/MazeLib/master/Documentation/DepthFirst.gif" title="DepthFirst">|
+|                |                |
+|:---------------|:---------------|
+| RandomizedPrims: <img align="left"  width="305" height="305" src="https://raw.githubusercontent.com/z0dd42d1/MazeLib/master/Documentation/RandomizedPrims.gif" title="RandomizedPrim"> | BinaryTree:   <img align="left"  width="305" height="305" src="https://raw.githubusercontent.com/z0dd42d1/MazeLib/master/Documentation/BinaryTree.gif" title="BinaryTree">
+| DepthFirst:  <img align="left"  width="305" height="305" src="https://raw.githubusercontent.com/z0dd42d1/MazeLib/master/Documentation/DepthFirst.gif" title="DepthFirst">| |
+
 
 Red Tile mark the entrance, green tiles the exit.
 
