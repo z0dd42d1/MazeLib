@@ -57,5 +57,19 @@ namespace MazeLibTests
             Assert.NotNull(mazeBuilder.Build());
             //TODO Test maze is solvable
         }
+
+        [Theory]
+        [ClassData(typeof(TestDataGenerator))]
+        public void GenerateFullSizeMaze_WithRecordMazeTransformationStepsTrue_MazeTransformationStepsContainOneExitAndEntry(IMazeGenAlgorithm mazeGenAlgorithm)
+        {
+            var mazeBuilder = new MazeBuilder()
+                .SetMazeAlgorithm(mazeGenAlgorithm)
+                .RecordMazeTransformationSteps()
+                .SetMazeDimensions(30, 30);
+
+            var steps = mazeBuilder.GetMazeTransformationSteps();
+            Assert.True(steps.Single(x => x.typeAfterTransform.Equals(MazeFieldType.Exit)) != null);
+            Assert.True(steps.Single(x => x.typeAfterTransform.Equals(MazeFieldType.Entrance)) != null);
+        }
     }
 }

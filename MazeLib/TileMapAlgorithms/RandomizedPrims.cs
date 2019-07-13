@@ -63,8 +63,8 @@ namespace MazeLib.TileMapAlgorithms
                 }
             }
 
-            TryPlaceExit();
-            TryPlaceEntrance();
+            yield return TryPlaceExit();
+            yield return TryPlaceEntrance();
         }
 
         public override string GetName()

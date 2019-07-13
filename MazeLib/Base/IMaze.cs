@@ -37,7 +37,6 @@
         /// <summary>
         /// Changes the maze according to the passed transformation step.
         /// </summary>
-        /// <param name="step"></param>
         void TransformMaze(MazeTransformationStep step);
 
         /// <summary>

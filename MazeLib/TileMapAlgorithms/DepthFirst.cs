@@ -36,7 +36,7 @@ namespace MazeLib.TileMapAlgorithms
                 if (newCorridor == null)
                 {
                     newCorridor = pointStack.Pop(); // One step back
-                    if (newCorridor != null)
+                    if (newCorridor != null && currentMaze.WouldChangeMazeFieldType(newCorridor.Value, MazeFieldType.Corridor))
                         yield return currentMaze.SetMazeTypeOnPos(newCorridor.Value, MazeFieldType.Corridor);
                 }
                 else

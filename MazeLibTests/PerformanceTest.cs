@@ -52,28 +52,28 @@ namespace MazeLibTests
         }
 
         [Fact]
-        public void TestPerformanceRecordTransformation_WithPrimAndSize500x500_DoesNotThrow()
+        public void TestPerformanceRecordTransformation_WithPrimAndSize100x100_DoesNotThrow()
         {
             MazeBuilder mazeBuilder = new MazeBuilder()
                 .RecordMazeTransformationSteps(true)
                 .SetMazeAlgorithm(new RandomizedPrims())
-                .SetMazeDimensions(500, 500);
+                .SetMazeDimensions(100, 100);
 
             double median = MedianPerfTest(mazeBuilder, 5);
 
             Log.Logger.Information($"Randomized Prims with RecordTransformationSteps==true Elapsed={TimeSpan.FromTicks(((long)median))}");
-            Log.Logger.Information($"RecordedTransformationSteps={mazeBuilder.MazeTransformationSteps.Count}");
+            Log.Logger.Information($"RecordedTransformationSteps={mazeBuilder.GetMazeTransformationSteps().Count}");
 
-            Assert.True(mazeBuilder.MazeTransformationSteps.Count > 1);
+            Assert.True(mazeBuilder.GetMazeTransformationSteps().Count > 1);
         }
 
         [Fact]
-        public void TestPerformanceOnlyMaze_WithPrimAndSize500x500_DoesNotThrow()
+        public void TestPerformanceOnlyMaze_WithPrimAndSize100x100_DoesNotThrow()
         {
             MazeBuilder mazeBuilder = new MazeBuilder()
                 .RecordMazeTransformationSteps(false)
                 .SetMazeAlgorithm(new RandomizedPrims())
-                .SetMazeDimensions(500, 500);
+                .SetMazeDimensions(100, 100);
 
             double median = MedianPerfTest(mazeBuilder, 5);
 

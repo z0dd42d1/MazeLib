@@ -55,16 +55,28 @@ namespace MazeLib.Base
             this.drawCallback = drawCallback;
         }
 
+        public bool WouldChangeMazeFieldType(MazeTransformationStep step)
+        {
+            return WouldChangeMazeFieldType(step.coordinate, step.typeAfterTransform);
+        }
+
+        public bool WouldChangeMazeFieldType(int x, int y, MazeFieldType typeAfter)
+        {
+            return mazefield[x][y].type != typeAfter;
+        }
+
+        public bool WouldChangeMazeFieldType(MazeCoordinate coordinate, MazeFieldType typeAfter)
+        {
+            return mazefield[coordinate.x][coordinate.y].type != typeAfter;
+        }
+
         public MazeTransformationStep SetMazeTypeOnPos(int x, int y, MazeFieldType type)
         {
-            MazeTransformationStep step = null;
-            if (mazefield[x][y].type != type)
-            {
-                step = new MazeTransformationStep() { coordinate = new MazeCoordinate() { x = x, y = y }, typeAfterTransform = type };
+            var step = new MazeTransformationStep() { coordinate = new MazeCoordinate() { x = x, y = y }, typeAfterTransform = type };
 
-                mazefield[x][y].type = type;
-                this.drawCallback?.Invoke(step);
-            }
+            mazefield[x][y].type = type;
+            this.drawCallback?.Invoke(step);
+
             return step;
         }
 

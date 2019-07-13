@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MazeLib.Base
 {
-    public class MazeTransformationStep : IEquatable<MazeTransformationStep>
+    public struct MazeTransformationStep : IEquatable<MazeTransformationStep>
     {
         public MazeFieldType typeAfterTransform;
         public MazeCoordinate coordinate;
