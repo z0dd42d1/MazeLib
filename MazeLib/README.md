@@ -33,14 +33,11 @@ MazeImageCreator.CreateMazeImage(maze, "filename", 10, "./");
 ```
 
 
-| RandomizedPrims: | <img align="left"  width="305" height="305" src="https://raw.githubusercontent.com/z0dd42d1/MazeLib/master/Documentation/RandomizedPrims.gif" title="RandomizedPrim">| BinaryTree:   |<img align="left"  width="305" height="305" src="https://raw.githubusercontent.com/z0dd42d1/MazeLib/master/Documentation/BinaryTree.gif" title="BinaryTree">
-| --------------- |-------------|------------|-----------|
-| DepthFirst: | <img align="left"  width="305" height="305" src="https://raw.githubusercontent.com/z0dd42d1/MazeLib/master/Documentation/DepthFirst.gif" title="DepthFirst">|   |
+||||
+| --------------- |-------------|------------|
+| RandomizedPrims: <img align="left"  width="305" height="305" src="https://raw.githubusercontent.com/z0dd42d1/MazeLib/master/Documentation/RandomizedPrims.gif" title="RandomizedPrim">| BinaryTree:   <img align="left"  width="305" height="305" src="https://raw.githubusercontent.com/z0dd42d1/MazeLib/master/Documentation/BinaryTree.gif" title="BinaryTree">
+| DepthFirst:  <img align="left"  width="305" height="305" src="https://raw.githubusercontent.com/z0dd42d1/MazeLib/master/Documentation/DepthFirst.gif" title="DepthFirst">
 
-
-
-
-<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 Red Tile mark the entrance, green tiles the exit.
 
 Algorithms implemented as described on https://en.wikipedia.org/wiki/Maze_generation_algorithm
