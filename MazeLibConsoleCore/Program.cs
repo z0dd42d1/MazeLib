@@ -48,7 +48,7 @@ namespace MazeLibConsoleCore
 
             private static async Task CreateImageAndGifForAlgoAsync(IMazeGenAlgorithm i)
             {
-                var drawMaze = new TileMapMaze(61, 61);
+                var drawMaze = new TileMapMaze(55, 55);
                 drawMaze.OverrideAllMazeFields(MazeFieldType.Wall);
                 await CreateMazeImageAndGif(i);
             }
@@ -68,7 +68,7 @@ namespace MazeLibConsoleCore
                     }
                 })
                 .RecordMazeTransformationSteps(true)
-                .SetMazeDimensions(61, 61)
+                .SetMazeDimensions(55, 55)
                 .Build();
 
             await MazeImageCreator.CreateMazeAnimationGifAsync(mazeBuilder.GetMazeTransformationSteps(), mazeBuilder.GetInitializedMaze, i.GetName(), 5, "./");
