@@ -38,10 +38,12 @@ MazeImageCreator.CreateMazeImage(maze, "filename", 10, "./");
 <p align="center">
 <img width="305" height="305" src="https://raw.githubusercontent.com/z0dd42d1/MazeLib/master/Documentation/RandomizedPrims.gif">
 </p>
+
 ### Binary Tree
 <p align="center">
 <img width="305" height="305" src="https://raw.githubusercontent.com/z0dd42d1/MazeLib/master/Documentation/BinaryTree.gif">
 </p>
+
 ### Depth First
 <p align="center">
 <img width="305" height="305" src="https://raw.githubusercontent.com/z0dd42d1/MazeLib/master/Documentation/DepthFirst.gif">
