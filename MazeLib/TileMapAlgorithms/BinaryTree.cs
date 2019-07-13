@@ -12,10 +12,8 @@ namespace MazeLib.TileMapAlgorithms
         private MazeCoordinate downright;
         private MazeCoordinate upperleft;
 
-        private IEnumerable<MazeTransformationStep> InternalGenerateMazeFullSize()
+        internal override IEnumerable<MazeTransformationStep> InternalGenerateMazeFullSize()
         {
-            InitializeMaze();
-
             /*
              * In the wall added version, for each vertex add a wall segment leading down or right, but not both.
              */
@@ -63,11 +61,6 @@ namespace MazeLib.TileMapAlgorithms
             return this.GetType().Name;
         }
 
-        public override IList<MazeTransformationStep> GenerateMazeFullSize()
-        {
-            return InternalGenerateMazeFullSize().ToList();
-        }
-
         public override void InitializeMaze()
         {
             this.currentMaze.OverrideAllMazeFields();
@@ -100,6 +93,10 @@ namespace MazeLib.TileMapAlgorithms
                 if (this.currentMaze.GetMazeTypeOnPos(1, possibleExit.y) == MazeFieldType.Corridor)
                 {
                     return this.currentMaze.SetMazeTypeOnPos(0, possibleExit.y, MazeFieldType.Exit);
+                }
+                else
+                {
+                    possibleExits.Remove(possibleExit);
                 }
             }
 

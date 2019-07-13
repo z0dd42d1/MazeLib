@@ -12,6 +12,9 @@ namespace MazeLib.Base
         private Action<MazeTransformationStep> drawCallback;
         private int width;
         private int height;
+        private bool recordMazeTranformationSteps = false;
+
+        public IList<MazeTransformationStep> MazeTransformationSteps { get; set; }
 
         public MazeBuilder()
         {
@@ -33,6 +36,12 @@ namespace MazeLib.Base
             return this;
         }
 
+        public MazeBuilder RecordMazeTransformationSteps(bool recordMazeTranformationStep = true)
+        {
+            this.recordMazeTranformationSteps = recordMazeTranformationStep;
+            return this;
+        }
+
         public MazeBuilder SetMazeDimensions(int width, int height)
         {
             this.width = width;
@@ -45,9 +54,17 @@ namespace MazeLib.Base
             var maze = new TileMapMaze(width, height);
             maze.SetDrawCallback(this.drawCallback);
             this.algo.SetCurrentMaze(maze);
-            this.algo.GenerateMazeFullSize();
 
-            return algo.GetCurrentMaze();
+            if (recordMazeTranformationSteps)
+            {
+                this.MazeTransformationSteps = this.algo.GenerateMazeWithTranformationList();
+            }
+            else
+            {
+                this.algo.GenerateMaze();
+            }
+
+            return algo.GetMaze();
         }
     }
 }

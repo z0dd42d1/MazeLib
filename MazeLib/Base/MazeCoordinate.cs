@@ -65,5 +65,37 @@ namespace MazeLib.Base
                 (this.y == coordinate.y && Math.Abs(this.x - coordinate.x) == 1)
                 ;
         }
+
+        /// <summary>
+        /// This method returns an array with 4 coordinates which
+        /// represent the direct vertical and horizontal adjacent MazeCoordinates.
+        /// </summary>
+        public static MazeCoordinate[] GetHorizontalVerticalAdjacentCoordinates(MazeCoordinate coordinateCenter)
+        {
+            var array = new MazeCoordinate[4];
+            array[0] = new MazeCoordinate(coordinateCenter.x, coordinateCenter.y - 1); // up
+            array[1] = new MazeCoordinate(coordinateCenter.x + 1, coordinateCenter.y); // right
+            array[2] = new MazeCoordinate(coordinateCenter.x - 1, coordinateCenter.y); // left
+            array[3] = new MazeCoordinate(coordinateCenter.x, coordinateCenter.y + 1); // down
+            return array;
+        }
+
+        /// <summary>
+        /// This method returns an array with 8 coordinates which
+        /// represent all adjacent MazeCoordinates.
+        /// </summary>
+        public static MazeCoordinate[] GetAllAdjacentCoordinates(MazeCoordinate coordinateCenter)
+        {
+            return new MazeCoordinate[]{
+                new MazeCoordinate(coordinateCenter.x, coordinateCenter.y - 1), // up
+                new MazeCoordinate(coordinateCenter.x + 1, coordinateCenter.y), // right
+                new MazeCoordinate(coordinateCenter.x - 1, coordinateCenter.y), // left
+                new MazeCoordinate(coordinateCenter.x, coordinateCenter.y + 1), // down
+                new MazeCoordinate(coordinateCenter.x + 1, coordinateCenter.y - 1), // up right
+                new MazeCoordinate(coordinateCenter.x - 1, coordinateCenter.y - 1), // up left
+                new MazeCoordinate(coordinateCenter.x + 1, coordinateCenter.y + 1), // down right
+                new MazeCoordinate(coordinateCenter.x - 1, coordinateCenter.y + 1), // down left
+        };
+        }
     }
 }

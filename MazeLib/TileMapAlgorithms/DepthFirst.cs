@@ -21,14 +21,7 @@ namespace MazeLib.TileMapAlgorithms
             return this.GetType().Name;
         }
 
-        public override IList<MazeTransformationStep> GenerateMazeFullSize()
-        {
-            InitializeMaze();
-
-            return InternalGenerateMazeFullSize().ToList();
-        }
-
-        private IEnumerable<MazeTransformationStep> InternalGenerateMazeFullSize()
+        internal override IEnumerable<MazeTransformationStep> InternalGenerateMazeFullSize()
         {
             entrance = new MazeCoordinate(upperleft.x + 1 + random.Next(this.currentMaze.GetWidth() - 2), upperleft.y);
 

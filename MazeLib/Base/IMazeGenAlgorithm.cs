@@ -17,7 +17,7 @@ namespace MazeLib.Base
         /// Returns the maze in its current state. Use this after generating a maze to get the endresult.
         /// </summary>
         /// <returns></returns>
-        TileMapMaze GetCurrentMaze();
+        TileMapMaze GetMaze();
 
         /// <summary>
         /// Initialized the maze for the generation algorithm
@@ -30,8 +30,10 @@ namespace MazeLib.Base
         void SetCurrentMaze(TileMapMaze maze);
 
         /// <summary>
-        /// Returns the finished maze. Can be awaited.
+        /// Returns the finished maze.
         /// </summary>
-        IList<MazeTransformationStep> GenerateMazeFullSize();
+        IList<MazeTransformationStep> GenerateMazeWithTranformationList();
+
+        void GenerateMaze();
     }
 }

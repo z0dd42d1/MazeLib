@@ -1,6 +1,7 @@
 ﻿using MazeLib.Base;
 using MazeLib.TileMapAlgorithms;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,36 +9,53 @@ using Xunit;
 
 namespace MazeLibTests
 {
-    // TODO Implement
-    /*
+    // Generate a neutral object array for each algorithm and return it as an enumerable to use it in ClassData + Theory Attribute.
     public class TestDataGenerator : IEnumerable<object[]>
     {
-        private readonly List<object[]> _data = new List<object[]>
-    {
-        new object[] {5, 1, 3, 9},
-        new object[] {7, 1, 5, 3}
-    };
+        private readonly List<object[]> _data = GetArrayOfMazeAlgos();
+
+        private static List<object[]> GetArrayOfMazeAlgos()
+        {
+            var list = new List<object[]>();
+
+            var mazes = KnownMazesTypes.GetAllMazeAlgos().ToArray<object>();
+
+            foreach (IMazeGenAlgorithm algorithm in mazes)
+            {
+                list.Add(new object[] { algorithm });
+            }
+            return list;
+        }
 
         public IEnumerator<object[]> GetEnumerator() => _data.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
-    */
-    /*
+
     public class TileMapAlgorithmsTests
     {
         [Theory]
-        // [ClassData( KnownMazesTypes.GetAllMazeAlgosAsType())]
-        public void GenerateFullSizeMaze_GeneratesMaze_10x10(Type mazeGenAlgorithm)
+        [ClassData(typeof(TestDataGenerator))]
+        public void GenerateFullSizeMaze_GeneratesMaze_10x10(IMazeGenAlgorithm mazeGenAlgorithm)
         {
-            IMazeGenAlgorithm instance = (IMazeGenAlgorithm)Activator.CreateInstance(mazeGenAlgorithm);
-
-            var maze = new MazeBuilder()
-                .SetMazeAlgorithm(instance)
+            var mazeBuilder = new MazeBuilder()
+                .SetMazeAlgorithm(mazeGenAlgorithm)
                 .SetMazeDimensions(10, 10);
 
-            Assert.NotNull(maze);
+            Assert.NotNull(mazeBuilder.Build());
+            //TODO Test maze is solvable
+        }
+
+        [Theory]
+        [ClassData(typeof(TestDataGenerator))]
+        public void GenerateFullSizeMaze_GeneratesMaze_100x100(IMazeGenAlgorithm mazeGenAlgorithm)
+        {
+            var mazeBuilder = new MazeBuilder()
+                .SetMazeAlgorithm(mazeGenAlgorithm)
+                .SetMazeDimensions(100, 100);
+
+            Assert.NotNull(mazeBuilder.Build());
+            //TODO Test maze is solvable
         }
     }
-    */
 }

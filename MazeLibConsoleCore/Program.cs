@@ -37,8 +37,8 @@ namespace MazeLibConsoleCore
                             {
                                 if (i is RandomizedPrims)
                                 {
-                                    //drawMaze.TransformMaze(m);
-                                    //MazeImageCreator.CreateMazeImage(drawMaze, i.GetName(), 10, "./");
+                                    drawMaze.TransformMaze(m);
+                                    MazeImageCreator.CreateMazeImage(drawMaze, i.GetName(), 10, "./");
                                 }
                             })
                             .SetMazeDimensions(61, 61)
@@ -63,9 +63,9 @@ namespace MazeLibConsoleCore
                 maze.OverrideAllMazeFields();
                 while (true)
                 {
-                    algo.GenerateMazeFullSize();
+                    algo.GenerateMazeWithTranformationList();
 
-                    MazeImageCreator.CreateMazeImage(algo.GetCurrentMaze(), algo.GetName(), 10, "./");
+                    MazeImageCreator.CreateMazeImage(algo.GetMaze(), algo.GetName(), 10, "./");
 
                     //PrintMaze(algo.GetGeneratedMaze());
                     //Console.ReadKey();

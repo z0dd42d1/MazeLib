@@ -17,7 +17,6 @@ namespace MazeLib.TileMapAlgorithms
     * maze, remove the wall from the list.
     */
 
-    // TODO translate german code commenting
     public class RandomizedPrims : MazeGenAlgorithmBase
     {
         private MazeCoordinate entrance;
@@ -25,17 +24,8 @@ namespace MazeLib.TileMapAlgorithms
         private HashSet<MazeCoordinate> VisitedList;
         private HashSet<MazeCoordinate> WallsList;
 
-        public override IList<MazeTransformationStep> GenerateMazeFullSize()
+        internal override IEnumerable<MazeTransformationStep> InternalGenerateMazeFullSize()
         {
-            InitializeMaze();
-
-            return InternalGenerateMazeFullSize().ToList();
-        }
-
-        private IEnumerable<MazeTransformationStep> InternalGenerateMazeFullSize()
-        {
-            this.currentMaze.OverrideAllMazeFields(MazeFieldType.Wall);
-
             VisitedList = new HashSet<MazeCoordinate>();
             WallsList = new HashSet<MazeCoordinate>();
 
@@ -62,7 +52,7 @@ namespace MazeLib.TileMapAlgorithms
                     VisitedList.Add(temp);
 
                     // make the wall a passage
-                    this.currentMaze.SetMazeTypeOnPos(temp, MazeFieldType.Corridor);
+                    yield return this.currentMaze.SetMazeTypeOnPos(temp, MazeFieldType.Corridor);
                     WallsList.Remove(temp);
 
                     addSourroundingWallsToWallList(temp);
@@ -87,40 +77,30 @@ namespace MazeLib.TileMapAlgorithms
             currentMaze.OverrideAllMazeFields(MazeFieldType.Wall);
         }
 
-        private void addSourroundingWallsToWallList(MazeCoordinate akt)
+        private void addSourroundingWallsToWallList(MazeCoordinate target)
         {
-            MazeCoordinate[] temp = new MazeCoordinate[8];
-
-            temp[0] = new MazeCoordinate(akt.x, akt.y - 1); // hoch
-            temp[3] = new MazeCoordinate(akt.x + 1, akt.y); // rechts
-            temp[4] = new MazeCoordinate(akt.x - 1, akt.y); // links
-            temp[5] = new MazeCoordinate(akt.x, akt.y + 1); // runter
+            MazeCoordinate[] temp = MazeCoordinate.GetHorizontalVerticalAdjacentCoordinates(target);
 
             for (int i = 0; i < temp.Length; i++)
             {
                 if (this.currentMaze.IsPointInMaze(temp[i]))
-                    if (!VisitedList.Contains(temp[i])) // Noch kein teil des Labyrinths?
+                    if (!VisitedList.Contains(temp[i]))
                         if (!WallsList.Contains(temp[i]))
-                        { //Noch nicht in der Liste?
+                        {
                             WallsList.Add(temp[i]);
                         }
             }
         }
 
-        private bool checkIfWallDividesTwoCorridors(MazeCoordinate akt)
+        private bool checkIfWallDividesTwoCorridors(MazeCoordinate target)
         {
-            var temp = new MazeCoordinate[4];
-            // will the new coordinate create a path?
-            temp[0] = new MazeCoordinate(akt.x, akt.y - 1); // hoch
-            temp[1] = new MazeCoordinate(akt.x + 1, akt.y); // rechts
-            temp[2] = new MazeCoordinate(akt.x - 1, akt.y); // links
-            temp[3] = new MazeCoordinate(akt.x, akt.y + 1); // runter
+            MazeCoordinate[] temp = MazeCoordinate.GetHorizontalVerticalAdjacentCoordinates(target);
 
             int TargetWallAlignsWithCorridors = 0;
             foreach (MazeCoordinate c in temp)
             {
                 if (this.currentMaze.GetMazeTypeOnPos(c) == MazeFieldType.Corridor)
-                    if (akt.x == c.x || akt.y == c.y)
+                    if (target.x == c.x || target.y == c.y)
                     {
                         TargetWallAlignsWithCorridors++;
                     }
@@ -129,16 +109,7 @@ namespace MazeLib.TileMapAlgorithms
             // direct connection
             if (TargetWallAlignsWithCorridors > 2) return true;
 
-            temp = new MazeCoordinate[8];
-
-            temp[0] = new MazeCoordinate(akt.x, akt.y - 1); // hoch
-            temp[1] = new MazeCoordinate(akt.x + 1, akt.y - 1); // hoch rechts
-            temp[2] = new MazeCoordinate(akt.x - 1, akt.y - 1); // hoch links
-            temp[3] = new MazeCoordinate(akt.x + 1, akt.y); // rechts
-            temp[4] = new MazeCoordinate(akt.x - 1, akt.y); // links
-            temp[5] = new MazeCoordinate(akt.x, akt.y + 1); // runter
-            temp[6] = new MazeCoordinate(akt.x + 1, akt.y + 1); // runter rechts
-            temp[7] = new MazeCoordinate(akt.x - 1, akt.y + 1); // runter links
+            temp = MazeCoordinate.GetAllAdjacentCoordinates(target);
 
             int CorridorFieldsInCloseProximity = 0;
             HashSet<MazeCoordinate> inProximity = new HashSet<MazeCoordinate>();
@@ -158,7 +129,7 @@ namespace MazeLib.TileMapAlgorithms
 
             if (CorridorFieldsInCloseProximity == 2)
             {
-                // check if the corridors are adjacent each other then its ok.
+                // check if the corridors are adjacent each other then its OK.
                 foreach (MazeCoordinate c in inProximity)
                 {
                     var subset = inProximity.Where(x => x != c).AsEnumerable();
@@ -183,22 +154,15 @@ namespace MazeLib.TileMapAlgorithms
 
         private void AddToWallList(MazeCoordinate akt)
         {
-            // TODO Refactor
-
-            MazeCoordinate[] temp = new MazeCoordinate[8];
-
-            temp[0] = new MazeCoordinate(akt.x, akt.y - 1); // hoch
-            temp[3] = new MazeCoordinate(akt.x + 1, akt.y); // rechts
-            temp[4] = new MazeCoordinate(akt.x - 1, akt.y); // links
-            temp[5] = new MazeCoordinate(akt.x, akt.y + 1); // runter
+            MazeCoordinate[] temp = MazeCoordinate.GetHorizontalVerticalAdjacentCoordinates(akt);
 
             for (int i = 0; i < temp.Length; i++)
             {
                 if (this.currentMaze.IsPointInMaze(temp[i]))
 
-                    if (!VisitedList.Contains(temp[i]))// schon Teil des Labyrinths?
+                    if (!VisitedList.Contains(temp[i]))
                     {
-                        if (!WallsList.Contains(temp[i]))//Noch nicht auf der Liste?
+                        if (!WallsList.Contains(temp[i]))
                         {
                             WallsList.Add(temp[i]);
                         }

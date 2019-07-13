@@ -10,11 +10,24 @@ namespace MazeLib.Base
     {
         protected Random random = new Random();
         protected TileMapMaze currentMaze;
-        private Action drawCallback;
 
-        public abstract IList<MazeTransformationStep> GenerateMazeFullSize();
+        internal abstract IEnumerable<MazeTransformationStep> InternalGenerateMazeFullSize();
 
-        public virtual TileMapMaze GetCurrentMaze()
+        public IList<MazeTransformationStep> GenerateMazeWithTranformationList()
+        {
+            InitializeMaze();
+
+            return InternalGenerateMazeFullSize().ToList();
+        }
+
+        public void GenerateMaze()
+        {
+            InitializeMaze();
+
+            InternalGenerateMazeFullSize().Last();
+        }
+
+        public virtual TileMapMaze GetMaze()
         {
             return currentMaze;
         }
@@ -32,11 +45,6 @@ namespace MazeLib.Base
         public void SetCurrentMaze(TileMapMaze maze)
         {
             this.currentMaze = maze;
-        }
-
-        public void SetDrawCallback(Action action)
-        {
-            this.drawCallback = action;
         }
 
         public abstract void InitializeMaze();
