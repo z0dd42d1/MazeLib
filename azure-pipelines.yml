@@ -21,16 +21,6 @@ steps:
     projects: '**/*.csproj'
 
 - task: DotNetCoreCLI@2
-  displayName: dotnet publish netstandard2.0 
-  inputs:
-    command: publish
-    publishWebProjects: false
-    projects: 'MazeLib/MazeLib.csproj'
-    arguments: '--framework netstandard2.0'
-    zipAfterPublish: false
-    modifyOutputPath: false
-
-- task: DotNetCoreCLI@2
   displayName: dotnet test
   inputs:
     command: test
@@ -49,6 +39,6 @@ steps:
   displayName: NuGet push nuget.org
   inputs:
     command: 'push'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/MazeLib*.nupkg;!$(Build.ArtifactStagingDirectory)/**/MazeLib*.symbols.nupkg;!$(Build.ArtifactStagingDirectory)/**/MazeLibConsole*.nupkg'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/MazeLib$(VersionNuget).nupkg;!$(Build.ArtifactStagingDirectory)/**/MazeLib*.symbols.nupkg'
     nuGetFeedType: 'external'
     publishFeedCredentials: 'Nuget.org'
