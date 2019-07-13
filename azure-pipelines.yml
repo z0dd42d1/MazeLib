@@ -39,6 +39,6 @@ steps:
   displayName: NuGet push nuget.org
   inputs:
     command: 'push'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/MazeLib$(VersionNuget).nupkg;!$(Build.ArtifactStagingDirectory)/**/MazeLib*.symbols.nupkg'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/MazeLib*.nupkg;!$(Build.ArtifactStagingDirectory)/**/MazeLib*.symbols.nupkg'
     nuGetFeedType: 'external'
     publishFeedCredentials: 'Nuget.org'
