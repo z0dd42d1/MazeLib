@@ -30,8 +30,9 @@ steps:
   displayName: dotnet pack
   inputs:
     command: pack
+    configuration: $(BuildConfiguration)
     packagesToPack: 'MazeLib/MazeLib.csproj'
-    packDirectory: '$(Build.ArtifactStagingDirectory)\$(BuildConfiguration)'
+    packDirectory: '$(Build.ArtifactStagingDirectory)/$(BuildConfiguration)'
     versioningScheme: byEnvVar
     versionEnvVar: VersionNuget
 
