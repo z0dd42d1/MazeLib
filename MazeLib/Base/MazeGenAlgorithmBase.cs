@@ -8,6 +8,8 @@ namespace MazeLib.Base
 {
     public abstract class MazeGenAlgorithmBase : IMazeGenAlgorithm
     {
+        private const int MINIMUM_MAZE_SIZE = 5;
+
         protected Random random = new Random();
         protected TileMapMaze currentMaze;
 
@@ -15,9 +17,24 @@ namespace MazeLib.Base
 
         public IList<MazeTransformationStep> GenerateMazeWithTranformationList()
         {
+            ValidateMinimumMazeRequirements();
+
             InitializeMaze();
 
             return InternalGenerateMazeFullSize().ToList();
+        }
+
+        private void ValidateMinimumMazeRequirements()
+        {
+            if (this.currentMaze == null)
+            {
+                throw new Exception("Cannot create a maze when the maze object is null. Set a valid maze object or use the MazeBuilder class.");
+            }
+            if (this.currentMaze.GetWidth() < MINIMUM_MAZE_SIZE ||
+                this.currentMaze.GetHeight() < MINIMUM_MAZE_SIZE)
+            {
+                throw new Exception($"Minimum dimensions for mazes are {MINIMUM_MAZE_SIZE} for both width and height. Can't create mazes with smaller values...");
+            }
         }
 
         public void GenerateMaze()
@@ -50,6 +67,11 @@ namespace MazeLib.Base
         public abstract void InitializeMaze();
 
         public abstract string GetName();
+
+        public override string ToString()
+        {
+            return GetName();
+        }
 
         /// <summary>
         /// Places a random and reachable entrance on the bottom of the maze.
