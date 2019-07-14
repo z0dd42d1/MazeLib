@@ -23,7 +23,7 @@ namespace MazeLib.TileMapAlgorithms
 
         internal override IEnumerable<MazeTransformationStep> InternalGenerateMazeFullSize()
         {
-            entrance = new MazeCoordinate(upperleft.x + 1 + random.Next(this.currentMaze.GetWidth() - 2), upperleft.y);
+            entrance = new MazeCoordinate(upperleft.X + 1 + Random.Next(this.CurrentMaze.GetWidth() - 2), upperleft.Y);
 
             pointStack.Push(entrance);
 
@@ -36,13 +36,13 @@ namespace MazeLib.TileMapAlgorithms
                 if (newCorridor == null)
                 {
                     newCorridor = pointStack.Pop(); // One step back
-                    if (newCorridor != null && currentMaze.WouldChangeMazeFieldType(newCorridor.Value, MazeFieldType.Corridor))
-                        yield return currentMaze.SetMazeTypeOnPos(newCorridor.Value, MazeFieldType.Corridor);
+                    if (newCorridor != null && CurrentMaze.WouldChangeMazeFieldType(newCorridor.Value, MazeFieldType.Corridor))
+                        yield return CurrentMaze.SetMazeTypeOnPos(newCorridor.Value, MazeFieldType.Corridor);
                 }
                 else
                 {
                     pointStack.Push(newCorridor.Value);
-                    yield return currentMaze.SetMazeTypeOnPos(newCorridor.Value, MazeFieldType.Corridor);
+                    yield return CurrentMaze.SetMazeTypeOnPos(newCorridor.Value, MazeFieldType.Corridor);
                 }
             }
 
@@ -56,12 +56,12 @@ namespace MazeLib.TileMapAlgorithms
             possibleWays.Clear();
 
             // four possible directions
-            possibleWays.Add(new MazeCoordinate(akt.x, akt.y - 1));
-            possibleWays.Add(new MazeCoordinate(akt.x + 1, akt.y));
-            possibleWays.Add(new MazeCoordinate(akt.x - 1, akt.y));
-            possibleWays.Add(new MazeCoordinate(akt.x, akt.y + 1));
+            possibleWays.Add(new MazeCoordinate(akt.X, akt.Y - 1));
+            possibleWays.Add(new MazeCoordinate(akt.X + 1, akt.Y));
+            possibleWays.Add(new MazeCoordinate(akt.X - 1, akt.Y));
+            possibleWays.Add(new MazeCoordinate(akt.X, akt.Y + 1));
 
-            int i = random.Next(possibleWays.Count);
+            int i = Random.Next(possibleWays.Count);
 
             while (possibleWays.Count != 0)
             {
@@ -73,7 +73,7 @@ namespace MazeLib.TileMapAlgorithms
                 {
                     possibleWays.Remove(possibleWays[i]);
                     if (possibleWays.Count != 0)
-                        i = random.Next(possibleWays.Count);
+                        i = Random.Next(possibleWays.Count);
                 }
             }
             return null;
@@ -81,17 +81,17 @@ namespace MazeLib.TileMapAlgorithms
 
         private bool IsValidWay(MazeCoordinate point, MazeCoordinate comeFrom)
         {
-            if (!this.currentMaze.IsPointInMaze(point)) return false;
+            if (!this.CurrentMaze.IsPointInMaze(point)) return false;
 
             // Already something other than a wall?
-            if (this.currentMaze.GetMazeTypeOnPos(point) != MazeFieldType.Wall)
+            if (this.CurrentMaze.GetMazeTypeOnPos(point) != MazeFieldType.Wall)
                 return false;
 
             // Make sure we do not create a way through a wall.
-            MazeCoordinate up = new MazeCoordinate(point.x, point.y - 1);
-            MazeCoordinate right = new MazeCoordinate(point.x + 1, point.y);
-            MazeCoordinate down = new MazeCoordinate(point.x, point.y + 1);
-            MazeCoordinate left = new MazeCoordinate(point.x - 1, point.y);
+            MazeCoordinate up = new MazeCoordinate(point.X, point.Y - 1);
+            MazeCoordinate right = new MazeCoordinate(point.X + 1, point.Y);
+            MazeCoordinate down = new MazeCoordinate(point.X, point.Y + 1);
+            MazeCoordinate left = new MazeCoordinate(point.X - 1, point.Y);
 
             MazeCoordinate[] pointsToCheck = { up, right, down, left };
 
@@ -99,7 +99,7 @@ namespace MazeLib.TileMapAlgorithms
             {
                 if (!pointsToCheck[i].Equals(comeFrom))
                 {
-                    if (currentMaze.GetMazeTypeOnPos(pointsToCheck[i]) == MazeFieldType.Corridor) return false;
+                    if (CurrentMaze.GetMazeTypeOnPos(pointsToCheck[i]) == MazeFieldType.Corridor) return false;
                 }
             }
 
@@ -108,16 +108,16 @@ namespace MazeLib.TileMapAlgorithms
 
         public override void InitializeMaze()
         {
-            downright = new MazeCoordinate(currentMaze.GetWidth() - 1, 0);
-            upperleft = new MazeCoordinate(0, currentMaze.GetHeight() - 1);
+            downright = new MazeCoordinate(CurrentMaze.GetWidth() - 1, 0);
+            upperleft = new MazeCoordinate(0, CurrentMaze.GetHeight() - 1);
 
-            currentMaze.OverrideAllMazeFields(MazeFieldType.Wall);
+            CurrentMaze.OverrideAllMazeFields(MazeFieldType.Wall);
         }
 
         internal override MazeTransformationStep TryPlaceEntrance()
         {
             // the entrance is placed during maze generation. This algorithm doesn't not need an extra handling.
-            return this.currentMaze.SetMazeTypeOnPos(entrance, MazeFieldType.Entrance);
+            return this.CurrentMaze.SetMazeTypeOnPos(entrance, MazeFieldType.Entrance);
         }
 
         internal override MazeTransformationStep TryPlaceExit()
@@ -125,19 +125,19 @@ namespace MazeLib.TileMapAlgorithms
             List<MazeCoordinate> possibleExits = new List<MazeCoordinate>();
 
             // collect all possible exits
-            for (int i = currentMaze.GetWidth() - 2; i >= 1; i--)
+            for (int i = CurrentMaze.GetWidth() - 2; i >= 1; i--)
             {
-                possibleExits.Add(new MazeCoordinate(i, downright.y));
+                possibleExits.Add(new MazeCoordinate(i, downright.Y));
             }
 
             // check in random order if exit is valid
             while (possibleExits.Count > 0)
             {
-                var possibleExit = possibleExits.ElementAt(random.Next(possibleExits.Count));
+                var possibleExit = possibleExits.ElementAt(Random.Next(possibleExits.Count));
 
-                if (currentMaze.GetMazeTypeOnPos(possibleExit.x, possibleExit.y + 1) == MazeFieldType.Corridor)
+                if (CurrentMaze.GetMazeTypeOnPos(possibleExit.X, possibleExit.Y + 1) == MazeFieldType.Corridor)
                 {
-                    return currentMaze.SetMazeTypeOnPos(possibleExit, MazeFieldType.Exit);
+                    return CurrentMaze.SetMazeTypeOnPos(possibleExit, MazeFieldType.Exit);
                 }
                 else
                 {

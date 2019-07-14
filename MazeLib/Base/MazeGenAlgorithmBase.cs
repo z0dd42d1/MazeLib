@@ -10,8 +10,11 @@ namespace MazeLib.Base
     {
         private const int MINIMUM_MAZE_SIZE = 5;
 
-        protected Random random = new Random();
-        protected TileMapMaze currentMaze;
+        private Random random = new Random();
+        private TileMapMaze currentMaze;
+
+        protected Random Random { get => random; set => random = value; }
+        protected TileMapMaze CurrentMaze { get => currentMaze; set => currentMaze = value; }
 
         internal abstract IEnumerable<MazeTransformationStep> InternalGenerateMazeFullSize();
 
@@ -26,12 +29,12 @@ namespace MazeLib.Base
 
         private void ValidateMinimumMazeRequirements()
         {
-            if (this.currentMaze == null)
+            if (this.CurrentMaze == null)
             {
                 throw new Exception("Cannot create a maze when the maze object is null. Set a valid maze object or use the MazeBuilder class.");
             }
-            if (this.currentMaze.GetWidth() < MINIMUM_MAZE_SIZE ||
-                this.currentMaze.GetHeight() < MINIMUM_MAZE_SIZE)
+            if (this.CurrentMaze.GetWidth() < MINIMUM_MAZE_SIZE ||
+                this.CurrentMaze.GetHeight() < MINIMUM_MAZE_SIZE)
             {
                 throw new Exception($"Minimum dimensions for mazes are {MINIMUM_MAZE_SIZE} for both width and height. Can't create mazes with smaller values...");
             }
@@ -46,22 +49,22 @@ namespace MazeLib.Base
 
         public virtual TileMapMaze GetMaze()
         {
-            return currentMaze;
+            return CurrentMaze;
         }
 
         public virtual int GetMazeWidth()
         {
-            return currentMaze.GetWidth();
+            return CurrentMaze.GetWidth();
         }
 
         public virtual int GetMazeHeight()
         {
-            return currentMaze.GetHeight();
+            return CurrentMaze.GetHeight();
         }
 
         public void SetCurrentMaze(TileMapMaze maze)
         {
-            this.currentMaze = maze;
+            this.CurrentMaze = maze;
         }
 
         public abstract void InitializeMaze();
@@ -85,7 +88,7 @@ namespace MazeLib.Base
             List<MazeCoordinate> possibleEntrances = new List<MazeCoordinate>();
 
             // collect all possible entrances
-            for (int x = currentMaze.GetWidth() - 2; x >= 1; x--)
+            for (int x = CurrentMaze.GetWidth() - 2; x >= 1; x--)
             {
                 possibleEntrances.Add(new MazeCoordinate(x, 0));
             }
@@ -93,11 +96,11 @@ namespace MazeLib.Base
             // check in random order if entrance is valid
             while (possibleEntrances.Count > 0)
             {
-                var possibleEntr = possibleEntrances.ElementAt(random.Next(possibleEntrances.Count));
+                var possibleEntr = possibleEntrances.ElementAt(Random.Next(possibleEntrances.Count));
 
-                if (currentMaze.GetMazeTypeOnPos(possibleEntr.x, 1) == MazeFieldType.Corridor)
+                if (CurrentMaze.GetMazeTypeOnPos(possibleEntr.X, 1) == MazeFieldType.Corridor)
                 {
-                    return currentMaze.SetMazeTypeOnPos(possibleEntr, MazeFieldType.Entrance);
+                    return CurrentMaze.SetMazeTypeOnPos(possibleEntr, MazeFieldType.Entrance);
                 }
                 else
                 {
@@ -120,19 +123,19 @@ namespace MazeLib.Base
             List<MazeCoordinate> possibleExits = new List<MazeCoordinate>();
 
             // collect all possible exits
-            for (int x = currentMaze.GetWidth() - 2; x >= 1; x--)
+            for (int x = CurrentMaze.GetWidth() - 2; x >= 1; x--)
             {
-                possibleExits.Add(new MazeCoordinate(x, currentMaze.GetHeight() - 1));
+                possibleExits.Add(new MazeCoordinate(x, CurrentMaze.GetHeight() - 1));
             }
 
             // check in random order if exit is valid
             while (possibleExits.Count > 0)
             {
-                var possibleExit = possibleExits.ElementAt(random.Next(possibleExits.Count));
+                var possibleExit = possibleExits.ElementAt(Random.Next(possibleExits.Count));
 
-                if (currentMaze.GetMazeTypeOnPos(possibleExit.x, possibleExit.y - 1) == MazeFieldType.Corridor)
+                if (CurrentMaze.GetMazeTypeOnPos(possibleExit.X, possibleExit.Y - 1) == MazeFieldType.Corridor)
                 {
-                    return currentMaze.SetMazeTypeOnPos(possibleExit, MazeFieldType.Exit);
+                    return CurrentMaze.SetMazeTypeOnPos(possibleExit, MazeFieldType.Exit);
                 }
                 else
                 {

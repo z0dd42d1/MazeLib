@@ -8,13 +8,16 @@ namespace MazeLib.Base
 {
     public struct MazeCoordinate : IEquatable<MazeCoordinate>
     {
-        public int x;
-        public int y;
+        private int x;
+        private int y;
+
+        public int X { get => x; set => x = value; }
+        public int Y { get => y; set => y = value; }
 
         public MazeCoordinate(int x, int y) : this()
         {
-            this.x = x;
-            this.y = y;
+            this.X = x;
+            this.Y = y;
         }
 
         public override bool Equals(object obj)
@@ -23,8 +26,8 @@ namespace MazeLib.Base
             {
                 var o = (MazeCoordinate)obj;
                 return
-                    o.x == this.x &&
-                    o.y == this.y;
+                    o.X == this.X &&
+                    o.Y == this.Y;
             }
             return false;
         }
@@ -50,8 +53,8 @@ namespace MazeLib.Base
         public bool Equals(MazeCoordinate o)
         {
             return
-              o.x == this.x &&
-              o.y == this.y;
+              o.X == this.X &&
+              o.Y == this.Y;
         }
 
         /// <summary>
@@ -61,8 +64,8 @@ namespace MazeLib.Base
         public bool IsAdjacentTo(MazeCoordinate coordinate)
         {
             // Directly adjacent to each other on x-Axis OR on y-Axis.
-            return (this.x == coordinate.x && Math.Abs(this.y - coordinate.y) == 1) ||
-                (this.y == coordinate.y && Math.Abs(this.x - coordinate.x) == 1)
+            return (this.X == coordinate.X && Math.Abs(this.Y - coordinate.Y) == 1) ||
+                (this.Y == coordinate.Y && Math.Abs(this.X - coordinate.X) == 1)
                 ;
         }
 
@@ -73,10 +76,10 @@ namespace MazeLib.Base
         public static MazeCoordinate[] GetHorizontalVerticalAdjacentCoordinates(MazeCoordinate coordinateCenter)
         {
             var array = new MazeCoordinate[4];
-            array[0] = new MazeCoordinate(coordinateCenter.x, coordinateCenter.y - 1); // up
-            array[1] = new MazeCoordinate(coordinateCenter.x + 1, coordinateCenter.y); // right
-            array[2] = new MazeCoordinate(coordinateCenter.x - 1, coordinateCenter.y); // left
-            array[3] = new MazeCoordinate(coordinateCenter.x, coordinateCenter.y + 1); // down
+            array[0] = new MazeCoordinate(coordinateCenter.X, coordinateCenter.Y - 1); // up
+            array[1] = new MazeCoordinate(coordinateCenter.X + 1, coordinateCenter.Y); // right
+            array[2] = new MazeCoordinate(coordinateCenter.X - 1, coordinateCenter.Y); // left
+            array[3] = new MazeCoordinate(coordinateCenter.X, coordinateCenter.Y + 1); // down
             return array;
         }
 
@@ -87,14 +90,14 @@ namespace MazeLib.Base
         public static MazeCoordinate[] GetAllAdjacentCoordinates(MazeCoordinate coordinateCenter)
         {
             return new MazeCoordinate[]{
-                new MazeCoordinate(coordinateCenter.x, coordinateCenter.y - 1), // up
-                new MazeCoordinate(coordinateCenter.x + 1, coordinateCenter.y), // right
-                new MazeCoordinate(coordinateCenter.x - 1, coordinateCenter.y), // left
-                new MazeCoordinate(coordinateCenter.x, coordinateCenter.y + 1), // down
-                new MazeCoordinate(coordinateCenter.x + 1, coordinateCenter.y - 1), // up right
-                new MazeCoordinate(coordinateCenter.x - 1, coordinateCenter.y - 1), // up left
-                new MazeCoordinate(coordinateCenter.x + 1, coordinateCenter.y + 1), // down right
-                new MazeCoordinate(coordinateCenter.x - 1, coordinateCenter.y + 1), // down left
+                new MazeCoordinate(coordinateCenter.X, coordinateCenter.Y - 1), // up
+                new MazeCoordinate(coordinateCenter.X + 1, coordinateCenter.Y), // right
+                new MazeCoordinate(coordinateCenter.X - 1, coordinateCenter.Y), // left
+                new MazeCoordinate(coordinateCenter.X, coordinateCenter.Y + 1), // down
+                new MazeCoordinate(coordinateCenter.X + 1, coordinateCenter.Y - 1), // up right
+                new MazeCoordinate(coordinateCenter.X - 1, coordinateCenter.Y - 1), // up left
+                new MazeCoordinate(coordinateCenter.X + 1, coordinateCenter.Y + 1), // down right
+                new MazeCoordinate(coordinateCenter.X - 1, coordinateCenter.Y + 1), // down left
         };
         }
     }

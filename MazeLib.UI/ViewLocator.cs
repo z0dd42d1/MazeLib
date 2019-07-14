@@ -14,7 +14,9 @@ namespace MazeLib.UI
 
         public IControl Build(object data)
         {
+#pragma warning disable CA1062 // Validate arguments of public methods
             var name = data.GetType().FullName.Replace("ViewModel", "View");
+#pragma warning restore CA1062 // Validate arguments of public methods
             var type = Type.GetType(name);
 
             if (type != null)

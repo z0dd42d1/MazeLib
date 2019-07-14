@@ -22,26 +22,26 @@ namespace MazeLib.TileMapAlgorithms
             {
                 for (int x = 1; x < this.GetMazeWidth() - 2; x += 2)
                 {
-                    switch (random.Next(2))
+                    switch (Random.Next(2))
                     {
                         case 0: // new wall down
-                            if (downright.x - x > 2) // don't draw new wall downward on the outer edge
+                            if (downright.X - x > 2) // don't draw new wall downward on the outer edge
                             {
-                                yield return this.currentMaze.SetMazeTypeOnPos(upperleft.x + x + 1, upperleft.y - y, MazeFieldType.Wall);
-                                if (upperleft.y - y > 2) // don't close corridors to the outer walls
+                                yield return this.CurrentMaze.SetMazeTypeOnPos(upperleft.X + x + 1, upperleft.Y - y, MazeFieldType.Wall);
+                                if (upperleft.Y - y > 2) // don't close corridors to the outer walls
                                 {
-                                    yield return this.currentMaze.SetMazeTypeOnPos(upperleft.x + x + 1, upperleft.y - y - 1, MazeFieldType.Wall);
+                                    yield return this.CurrentMaze.SetMazeTypeOnPos(upperleft.X + x + 1, upperleft.Y - y - 1, MazeFieldType.Wall);
                                 }
                             }
                             break;
 
                         case 1:
-                            if (upperleft.y - y > 2) // don't draw new wall horizontal on the outer edge
+                            if (upperleft.Y - y > 2) // don't draw new wall horizontal on the outer edge
                             {
-                                yield return this.currentMaze.SetMazeTypeOnPos(upperleft.x + x, upperleft.y - (y + 1), MazeFieldType.Wall);
-                                if (downright.x - x > 2) // don't close corridors to the outer walls
+                                yield return this.CurrentMaze.SetMazeTypeOnPos(upperleft.X + x, upperleft.Y - (y + 1), MazeFieldType.Wall);
+                                if (downright.X - x > 2) // don't close corridors to the outer walls
                                 {
-                                    yield return this.currentMaze.SetMazeTypeOnPos(upperleft.x + x + 1, upperleft.y - (y + 1), MazeFieldType.Wall);
+                                    yield return this.CurrentMaze.SetMazeTypeOnPos(upperleft.X + x + 1, upperleft.Y - (y + 1), MazeFieldType.Wall);
                                 }
                             }
                             break;
@@ -63,16 +63,16 @@ namespace MazeLib.TileMapAlgorithms
 
         public override void InitializeMaze()
         {
-            this.currentMaze.OverrideAllMazeFields();
-            downright = new MazeCoordinate(this.currentMaze.GetWidth() - 1, 0);
-            upperleft = new MazeCoordinate(0, this.currentMaze.GetHeight() - 1);
-            this.currentMaze.MakeRectangle(upperleft, downright);
+            this.CurrentMaze.OverrideAllMazeFields();
+            downright = new MazeCoordinate(this.CurrentMaze.GetWidth() - 1, 0);
+            upperleft = new MazeCoordinate(0, this.CurrentMaze.GetHeight() - 1);
+            this.CurrentMaze.MakeRectangle(upperleft, downright);
         }
 
         internal override MazeTransformationStep TryPlaceEntrance()
         {
             // no need to check, the nature of the algorithm will guarantee that all positions on this side are valid entrances.
-            return this.currentMaze.SetMazeTypeOnPos(random.Next(1, currentMaze.GetWidth() - 2), 0, MazeFieldType.Entrance);
+            return this.CurrentMaze.SetMazeTypeOnPos(Random.Next(1, CurrentMaze.GetWidth() - 2), 0, MazeFieldType.Entrance);
         }
 
         internal override MazeTransformationStep TryPlaceExit()
@@ -80,7 +80,7 @@ namespace MazeLib.TileMapAlgorithms
             List<MazeCoordinate> possibleExits = new List<MazeCoordinate>();
 
             // collect all possible exits
-            for (int y = currentMaze.GetHeight() - 2; y >= currentMaze.GetHeight() / 2; y--)
+            for (int y = CurrentMaze.GetHeight() - 2; y >= CurrentMaze.GetHeight() / 2; y--)
             {
                 possibleExits.Add(new MazeCoordinate(0, y));
             }
@@ -88,11 +88,11 @@ namespace MazeLib.TileMapAlgorithms
             // check in random order if exit is valid
             while (possibleExits.Count > 0)
             {
-                var possibleExit = possibleExits.ElementAt(random.Next(possibleExits.Count));
+                var possibleExit = possibleExits.ElementAt(Random.Next(possibleExits.Count));
 
-                if (this.currentMaze.GetMazeTypeOnPos(1, possibleExit.y) == MazeFieldType.Corridor)
+                if (this.CurrentMaze.GetMazeTypeOnPos(1, possibleExit.Y) == MazeFieldType.Corridor)
                 {
-                    return this.currentMaze.SetMazeTypeOnPos(0, possibleExit.y, MazeFieldType.Exit);
+                    return this.CurrentMaze.SetMazeTypeOnPos(0, possibleExit.Y, MazeFieldType.Exit);
                 }
                 else
                 {

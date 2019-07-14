@@ -12,7 +12,7 @@ namespace MazeLib.UI.Converters
         {
             if (value is int)
             {
-                return ((int)value).ToString();
+                return ((int)value).ToString(CultureInfo.InvariantCulture);
             }
             return string.Empty;
         }
@@ -22,7 +22,7 @@ namespace MazeLib.UI.Converters
             string intString = value as string;
             if (!string.IsNullOrEmpty(intString))
             {
-                return int.Parse(intString);
+                return int.Parse(intString, CultureInfo.InvariantCulture);
             }
             return 0;
         }

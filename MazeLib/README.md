@@ -21,7 +21,7 @@ Create a maze object with the builder pattern (Customized parameters):
     var maze = mazeBuilder
         .SetMazeAlgorithm(new DepthFirst())
         .SetMazeDimensions(200,200)
-        .SetDrawCallback(t => DrawTile(t.coordinate.x,t.coordinate.y,t.typeAfterTransform))
+        .SetDrawCallback(t => DrawTile(t.coordinate.X,t.coordinate.Y,t.typeAfterTransform))
         .Build();
 ```
 

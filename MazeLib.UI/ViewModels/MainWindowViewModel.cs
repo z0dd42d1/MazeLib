@@ -1,4 +1,6 @@
-﻿using ReactiveUI;
+﻿using MazeLib.Base;
+using MazeLib.TileMapAlgorithms;
+using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Reactive;
@@ -17,6 +19,8 @@ namespace MazeLib.UI.ViewModels
         {
             throw new NotImplementedException();
         }
+
+        public IList<IMazeGenAlgorithm> MazeGenAlgorithms { get { return KnownMazesTypes.GetAllMazeAlgos(); } }
 
         public int Width { get; set; }
 

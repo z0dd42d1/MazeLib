@@ -10,7 +10,7 @@ using Xunit;
 namespace MazeLibTests
 {
     // Generate a neutral object array for each algorithm and return it as an enumerable to use it in ClassData + Theory Attribute.
-    public class TestDataGenerator : IEnumerable<object[]>
+    public class TestDataGeneratorCollection : IEnumerable<object[]>
     {
         private readonly List<object[]> _data = GetArrayOfMazeAlgos();
 
@@ -35,7 +35,7 @@ namespace MazeLibTests
     public class TileMapAlgorithmsTests
     {
         [Theory]
-        [ClassData(typeof(TestDataGenerator))]
+        [ClassData(typeof(TestDataGeneratorCollection))]
         public void GenerateFullSizeMaze_GeneratesMaze_10x10(IMazeGenAlgorithm mazeGenAlgorithm)
         {
             var mazeBuilder = new MazeBuilder()
@@ -47,7 +47,7 @@ namespace MazeLibTests
         }
 
         [Theory]
-        [ClassData(typeof(TestDataGenerator))]
+        [ClassData(typeof(TestDataGeneratorCollection))]
         public void GenerateFullSizeMaze_GeneratesMaze_100x100(IMazeGenAlgorithm mazeGenAlgorithm)
         {
             var mazeBuilder = new MazeBuilder()
@@ -59,7 +59,7 @@ namespace MazeLibTests
         }
 
         [Theory]
-        [ClassData(typeof(TestDataGenerator))]
+        [ClassData(typeof(TestDataGeneratorCollection))]
         public void GenerateFullSizeMaze_WithRecordMazeTransformationStepsTrue_MazeTransformationStepsContainOneExitAndEntry(IMazeGenAlgorithm mazeGenAlgorithm)
         {
             var mazeBuilder = new MazeBuilder()

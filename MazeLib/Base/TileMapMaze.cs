@@ -37,7 +37,7 @@ namespace MazeLib.Base
 
         public MazeFieldType GetMazeTypeOnPos(MazeCoordinate coordinate)
         {
-            return GetMazeTypeOnPos(coordinate.x, coordinate.y);
+            return GetMazeTypeOnPos(coordinate.X, coordinate.Y);
         }
 
         public MazeFieldType GetMazeTypeOnPos(int x, int y)
@@ -47,7 +47,7 @@ namespace MazeLib.Base
 
         public MazeTransformationStep SetMazeTypeOnPos(MazeCoordinate coordinate, MazeFieldType type)
         {
-            return SetMazeTypeOnPos(coordinate.x, coordinate.y, type);
+            return SetMazeTypeOnPos(coordinate.X, coordinate.Y, type);
         }
 
         internal void SetDrawCallback(Action<MazeTransformationStep> drawCallback)
@@ -67,12 +67,12 @@ namespace MazeLib.Base
 
         public bool WouldChangeMazeFieldType(MazeCoordinate coordinate, MazeFieldType typeAfter)
         {
-            return mazefield[coordinate.x][coordinate.y].type != typeAfter;
+            return mazefield[coordinate.X][coordinate.Y].type != typeAfter;
         }
 
         public MazeTransformationStep SetMazeTypeOnPos(int x, int y, MazeFieldType type)
         {
-            var step = new MazeTransformationStep() { coordinate = new MazeCoordinate() { x = x, y = y }, typeAfterTransform = type };
+            var step = new MazeTransformationStep() { coordinate = new MazeCoordinate() { X = x, Y = y }, typeAfterTransform = type };
 
             mazefield[x][y].type = type;
             this.drawCallback?.Invoke(step);
@@ -82,7 +82,7 @@ namespace MazeLib.Base
 
         public void TransformMaze(MazeTransformationStep step)
         {
-            mazefield[step.coordinate.x][step.coordinate.y].type = step.typeAfterTransform;
+            mazefield[step.coordinate.X][step.coordinate.Y].type = step.typeAfterTransform;
         }
 
         public void OverrideAllMazeFields(MazeFieldType defaultType = MazeFieldType.Corridor)
@@ -101,14 +101,14 @@ namespace MazeLib.Base
             int i;
             for (i = 0; i < this.height; i++)
             { // Left / Right walls
-                this.SetMazeTypeOnPos(upperleft.x, upperleft.y - i, defaultType);
-                this.SetMazeTypeOnPos(downright.x, upperleft.y - i, defaultType);
+                this.SetMazeTypeOnPos(upperleft.X, upperleft.Y - i, defaultType);
+                this.SetMazeTypeOnPos(downright.X, upperleft.Y - i, defaultType);
             }
 
             for (i = 0; i < this.width; i++)
             { // Top / Bottom walls
-                this.SetMazeTypeOnPos(upperleft.x + i, upperleft.y, defaultType);
-                this.SetMazeTypeOnPos(upperleft.x + i, downright.y, defaultType);
+                this.SetMazeTypeOnPos(upperleft.X + i, upperleft.Y, defaultType);
+                this.SetMazeTypeOnPos(upperleft.X + i, downright.Y, defaultType);
             }
         }
 
@@ -119,10 +119,10 @@ namespace MazeLib.Base
         internal bool IsPointInMaze(MazeCoordinate point)
         {
             // Out of the maze?
-            if (point.x <= 0 || point.x >= width - 1)
+            if (point.X <= 0 || point.X >= width - 1)
                 return false;
 
-            if (point.y >= height - 1 || point.y <= 0)
+            if (point.Y >= height - 1 || point.Y <= 0)
                 return false;
 
             return true;

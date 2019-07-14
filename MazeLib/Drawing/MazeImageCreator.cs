@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MazeLib
 {
-    public class MazeImageCreator
+    public static class MazeImageCreator
     {
         public static Image GetMazeImage(IMaze maze, int tilesize)
         {
@@ -70,25 +70,27 @@ namespace MazeLib
 
         public static async Task CreateMazeAnimationGifAsync(IList<MazeTransformationStep> mazeTransformationSteps, IMaze maze, string label, int tilesize, string targetPath)
         {
+            if (maze == null) throw new ArgumentNullException(nameof(maze));
+
             int stepsPerImage = 30;
             int index = 0;
 
             using (var gif = new AnimatedGifCreator($"{label}.gif", 16)) // 16ms == 60fps
             {
-                await gif.AddFrameAsync(GetMazeImage(maze, tilesize), delay: -1, quality: GifQuality.Bit8);
+                await gif.AddFrameAsync(GetMazeImage(maze, tilesize), delay: -1, quality: GifQuality.Bit8).ConfigureAwait(false);
                 foreach (MazeTransformationStep step in mazeTransformationSteps)
                 {
                     maze.TransformMaze(step);
                     index++;
                     if (index % stepsPerImage == 0)
                     {
-                        await gif.AddFrameAsync(GetMazeImage(maze, tilesize), delay: -1, quality: GifQuality.Bit8);
+                        await gif.AddFrameAsync(GetMazeImage(maze, tilesize), delay: -1, quality: GifQuality.Bit8).ConfigureAwait(false);
                     }
                 }
                 var finished = GetMazeImage(maze, tilesize);
                 for (int i = 40 - 1; i >= 0; i--)
                 {
-                    await gif.AddFrameAsync(finished, delay: -1, quality: GifQuality.Bit8);
+                    await gif.AddFrameAsync(finished, delay: -1, quality: GifQuality.Bit8).ConfigureAwait(false);
                 }
             }
         }

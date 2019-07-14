@@ -30,10 +30,10 @@ namespace MazeLib.TileMapAlgorithms
             WallsList = new HashSet<MazeCoordinate>();
 
             // Pick a cell and mark it as part of the maze
-            entrance = new MazeCoordinate(random.Next(1, this.currentMaze.GetWidth() - 2), this.currentMaze.GetHeight() - 2);
+            entrance = new MazeCoordinate(Random.Next(1, this.CurrentMaze.GetWidth() - 2), this.CurrentMaze.GetHeight() - 2);
 
             VisitedList.Add(entrance);
-            yield return this.currentMaze.SetMazeTypeOnPos(entrance, MazeFieldType.Corridor);
+            yield return this.CurrentMaze.SetMazeTypeOnPos(entrance, MazeFieldType.Corridor);
 
             //add the walls to the wall list
             AddToWallList(entrance);
@@ -43,7 +43,7 @@ namespace MazeLib.TileMapAlgorithms
             while (WallsList.Count > 0) // while there are walls
             {
                 // Pick random wall
-                rand = random.Next(WallsList.Count);
+                rand = Random.Next(WallsList.Count);
                 temp = WallsList.ElementAt(rand);
 
                 // If the wall does not divide two cells
@@ -52,7 +52,7 @@ namespace MazeLib.TileMapAlgorithms
                     VisitedList.Add(temp);
 
                     // make the wall a passage
-                    yield return this.currentMaze.SetMazeTypeOnPos(temp, MazeFieldType.Corridor);
+                    yield return this.CurrentMaze.SetMazeTypeOnPos(temp, MazeFieldType.Corridor);
                     WallsList.Remove(temp);
 
                     addSourroundingWallsToWallList(temp);
@@ -74,7 +74,7 @@ namespace MazeLib.TileMapAlgorithms
 
         public override void InitializeMaze()
         {
-            currentMaze.OverrideAllMazeFields(MazeFieldType.Wall);
+            CurrentMaze.OverrideAllMazeFields(MazeFieldType.Wall);
         }
 
         private void addSourroundingWallsToWallList(MazeCoordinate target)
@@ -83,7 +83,7 @@ namespace MazeLib.TileMapAlgorithms
 
             for (int i = 0; i < temp.Length; i++)
             {
-                if (this.currentMaze.IsPointInMaze(temp[i]))
+                if (this.CurrentMaze.IsPointInMaze(temp[i]))
                     if (!VisitedList.Contains(temp[i]))
                         if (!WallsList.Contains(temp[i]))
                         {
@@ -99,8 +99,8 @@ namespace MazeLib.TileMapAlgorithms
             int TargetWallAlignsWithCorridors = 0;
             foreach (MazeCoordinate c in temp)
             {
-                if (this.currentMaze.GetMazeTypeOnPos(c) == MazeFieldType.Corridor)
-                    if (target.x == c.x || target.y == c.y)
+                if (this.CurrentMaze.GetMazeTypeOnPos(c) == MazeFieldType.Corridor)
+                    if (target.X == c.X || target.Y == c.Y)
                     {
                         TargetWallAlignsWithCorridors++;
                     }
@@ -115,7 +115,7 @@ namespace MazeLib.TileMapAlgorithms
             HashSet<MazeCoordinate> inProximity = new HashSet<MazeCoordinate>();
             foreach (MazeCoordinate c in temp)
             {
-                if (currentMaze.GetMazeTypeOnPos(c) != MazeFieldType.Wall)
+                if (CurrentMaze.GetMazeTypeOnPos(c) != MazeFieldType.Wall)
                 {
                     CorridorFieldsInCloseProximity++;
                     inProximity.Add(c);
@@ -158,7 +158,7 @@ namespace MazeLib.TileMapAlgorithms
 
             for (int i = 0; i < temp.Length; i++)
             {
-                if (this.currentMaze.IsPointInMaze(temp[i]))
+                if (this.CurrentMaze.IsPointInMaze(temp[i]))
 
                     if (!VisitedList.Contains(temp[i]))
                     {
