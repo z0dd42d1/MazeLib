@@ -8,8 +8,6 @@ namespace MazeLib.Base
 {
     public abstract class MazeGenAlgorithmBase : IMazeGenAlgorithm
     {
-        private const int MINIMUM_MAZE_SIZE = 5;
-
         private Random random = new Random();
         private TileMapMaze currentMaze;
 
@@ -33,10 +31,10 @@ namespace MazeLib.Base
             {
                 throw new Exception("Cannot create a maze when the maze object is null. Set a valid maze object or use the MazeBuilder class.");
             }
-            if (this.CurrentMaze.GetWidth() < MINIMUM_MAZE_SIZE ||
-                this.CurrentMaze.GetHeight() < MINIMUM_MAZE_SIZE)
+            if (this.CurrentMaze.GetWidth() < Constants.MINIMUM_MAZE_SIZE ||
+                this.CurrentMaze.GetHeight() < Constants.MINIMUM_MAZE_SIZE)
             {
-                throw new Exception($"Minimum dimensions for mazes are {MINIMUM_MAZE_SIZE} for both width and height. Can't create mazes with smaller values...");
+                throw new Exception($"Minimum dimensions for mazes are {Constants.MINIMUM_MAZE_SIZE} for both width and height. Can't create mazes with smaller values...");
             }
         }
 

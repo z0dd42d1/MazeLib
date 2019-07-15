@@ -28,6 +28,9 @@ namespace MazeLib.Base
             this.width = width;
             this.height = height;
 
+            if (width < Constants.MINIMUM_MAZE_SIZE || height < Constants.MINIMUM_MAZE_SIZE)
+                throw new Exception($"A valid maze cannot subceed the limit of {Constants.MINIMUM_MAZE_SIZE} in height or width.");
+
             mazefield = new MazeField[width][];
             for (int w = 0; w < width; w++)
             {
@@ -38,6 +41,11 @@ namespace MazeLib.Base
         public MazeFieldType GetMazeTypeOnPos(MazeCoordinate coordinate)
         {
             return GetMazeTypeOnPos(coordinate.X, coordinate.Y);
+        }
+
+        public bool IsCorridor(MazeCoordinate coordinate)
+        {
+            return GetMazeTypeOnPos(coordinate) == MazeFieldType.Corridor;
         }
 
         public MazeFieldType GetMazeTypeOnPos(int x, int y)

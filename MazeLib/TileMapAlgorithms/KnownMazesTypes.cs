@@ -15,6 +15,7 @@ namespace MazeLib.TileMapAlgorithms
             new DepthFirst (),
             new BinaryTree (),
             new RandomizedPrims(),
+            new RecursiveDivision()
         };
 
         public static IList<Type> GetAllMazeAlgosAsType() => GetAllMazeAlgos().Select(x => x.GetType()).ToList();
