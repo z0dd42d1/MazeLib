@@ -68,7 +68,7 @@ namespace MazeLib
             }
         }
 
-        public static async Task CreateMazeAnimationGifAsync(IList<MazeTransformationStep> mazeTransformationSteps, IMaze maze, string label, int tilesize, string targetPath)
+        public static async Task CreateMazeAnimationGifAsync(IList<MazeTransformationStep> mazeTransformationSteps, IMaze maze, string label, int tilesize)
         {
             if (maze == null) throw new ArgumentNullException(nameof(maze));
 
