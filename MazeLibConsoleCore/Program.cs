@@ -24,21 +24,23 @@ namespace MazeLibConsoleCore
         private static async Task CreateMazeImageAndGif(IMazeGenAlgorithm i)
         {
             MazeBuilder mazeBuilder = new MazeBuilder();
+            TileMapMaze drawMaze = new TileMapMaze(60, 60);
+            drawMaze.OverrideAllMazeFields();
             var maze = mazeBuilder
                 .SetMazeAlgorithm(i)
                 .SetDrawCallback(m =>
                 {
-                    if (i is RandomizedPrims)
+                    if (i is RecursiveDivision)
                     {
-                        // drawMaze.TransformMaze(m);
-                        // MazeImageCreator.CreateMazeImage(drawMaze, i.GetName(), 10, "./");
+                        //drawMaze.TransformMaze(m);
+                        //MazeImageCreator.CreateMazeImage(drawMaze, i.GetName(), 10, "./");
                     }
                 })
                 .RecordMazeTransformationSteps(true)
-                .SetMazeDimensions(55, 55)
+                .SetMazeDimensions(60, 60)
                 .Build();
 
-            await MazeImageCreator.CreateMazeAnimationGifAsync(mazeBuilder.GetMazeTransformationSteps(), mazeBuilder.GetInitializedMaze, i.GetName(), 5, "./").ConfigureAwait(false);
+            await MazeImageCreator.CreateMazeAnimationGifAsync(mazeBuilder.GetMazeTransformationSteps(), mazeBuilder.GetInitializedMaze, i.GetName(), 5).ConfigureAwait(false);
 
             MazeImageCreator.CreateMazeImage(maze, i.GetName(), 5, "./");
 

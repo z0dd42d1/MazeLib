@@ -1,14 +1,21 @@
 ﻿using MazeLib.Base;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MazeLib.TileMapAlgorithms
 {
-    internal class RecursiveDivision : MazeGenAlgorithmBase
+    public class RecursiveDivision : MazeGenAlgorithmBase
     {
         private MazeCoordinate downright;
         private MazeCoordinate upperleft;
+
+        private enum Strategy
+        {
+            DividedBigSpacesInTheMiddle,
+            CreateCompactRandomLabyrinth
+        }
 
         public override string GetName()
         {
@@ -25,7 +32,7 @@ namespace MazeLib.TileMapAlgorithms
 
         internal override IEnumerable<MazeTransformationStep> InternalGenerateMazeFullSize()
         {
-            foreach (var recursiveResult in RekursiveDiv(upperleft, downright))
+            foreach (var recursiveResult in RekursiveDiv(upperleft, downright, Random.Next(2) > 0))
             {
                 yield return recursiveResult;
             }
@@ -34,136 +41,222 @@ namespace MazeLib.TileMapAlgorithms
             yield return TryPlaceExit();
         }
 
-        private IEnumerable<MazeTransformationStep> RekursiveDiv(MazeCoordinate recUpperleft, MazeCoordinate recDownright)
+        private IEnumerable<MazeTransformationStep> RekursiveDiv(MazeCoordinate recUpperleft, MazeCoordinate recDownright, bool horizontal)
         {
             int width = recDownright.X - recUpperleft.X;
             int height = recUpperleft.Y - recDownright.Y;
+            int minSize = 0;
 
-            int decide = 0;
-            int maxdiff = 1;
+            Strategy currentStrategy = CheckWhichStrategyToUse(width, height);
 
-            bool dontContinue = false;
-
-            if (width >= 5 && height >= 5)
+            if (!(width < minSize && height < minSize))
             {
-                if (width - height > maxdiff)
+                // Override the random decision for horizontal/vertical wall placement, this reduces long stretched corridors
+
+                if (width > height)
                 {
-                    decide = 1;
-                }
-                else if (height - width > maxdiff)
-                {
-                    decide = 0;
+                    horizontal = false;
                 }
                 else
-                    decide = Random.Next(2);
-            }
-            else if (width < 5 && height < 5)
-            {
-                dontContinue = true; // Stop recursion
-            }
-            else if (width < 5 && height >= 5)
-            {
-                decide = 0;//horizontal teilen
-            }
-            else if (width >= 5 && height <= 5)
-            {
-                decide = 1;//senkrecht teilen
-            }
+                {
+                    horizontal = true;
+                }
 
-            int newWallX, newWallY, triesToPlaceWall = 0;
-            if (!dontContinue)
-            {
-                switch (decide)
-                {// Horizontal oder Senkrecht
-                    case 0:// Horizontal
-                        int i;
-
-                        do
-                        { // Punkt aussuchen wo die Mauer hinkommt
-                            if (triesToPlaceWall > 15)
-                            {
-                                dontContinue = true;
-                            }
-
-                            newWallY = recDownright.Y + 2 + Random.Next(height - 3);
-
-                            triesToPlaceWall++;
-                        } while (!dontContinue &&
-                                  (CurrentMaze.IsCorridor(new MazeCoordinate(recUpperleft.X, newWallY))
-                                || CurrentMaze.IsCorridor(new MazeCoordinate(recDownright.X, newWallY))));
-
-                        for (i = 0; i < width; i++)
-                        { // Neue Mauer ziehen
+                if (horizontal)
+                {// Horizontal
+                    int newWallY = TryPlaceWallHorizontal(recUpperleft, recDownright, currentStrategy);
+                    if (newWallY > 0)
+                    {
+                        for (int i = 1; i < width; i++)
+                        { // Create wall
                             yield return CurrentMaze.SetMazeTypeOnPos(new MazeCoordinate(recUpperleft.X + i, newWallY), MazeFieldType.Wall);
                         }
 
-                        // Durchgang erschaffen
-                        int randX = (recUpperleft.X + 1 + Random.Next(width - 1));
+                        // Place corridor
+                        int randX = FindHorizontalCorridor(ref recUpperleft, ref recDownright);
                         yield return CurrentMaze.SetMazeTypeOnPos(new MazeCoordinate(randX, newWallY), MazeFieldType.Corridor);
 
-                        // oben
+                        // up
                         MazeCoordinate upperleftNew = new MazeCoordinate(recUpperleft.X, recUpperleft.Y);
                         MazeCoordinate downrightNew = new MazeCoordinate(recDownright.X, newWallY);
 
-                        foreach (var recursiveResult in RekursiveDiv(upperleftNew, downrightNew))
+                        foreach (var recursiveResult in RekursiveDiv(upperleftNew, downrightNew, Random.Next(2) > 0))
                         {
                             yield return recursiveResult;
                         }
 
-                        // unten
+                        // down
                         upperleftNew = new MazeCoordinate(recUpperleft.X, newWallY);
                         downrightNew = new MazeCoordinate(recDownright.X, recDownright.Y);
 
-                        foreach (var recursiveResult in RekursiveDiv(upperleftNew, downrightNew))
+                        foreach (var recursiveResult in RekursiveDiv(upperleftNew, downrightNew, Random.Next(2) > 0))
                         {
                             yield return recursiveResult;
                         }
-                        break;
-
-                    case 1:// Senkrecht
-
-                        do
-                        { // Punkt aussuchen wo die Mauer hinkommt
-                            if (triesToPlaceWall > 15)
-                            {
-                                dontContinue = true;
-                            }
-
-                            newWallX = recUpperleft.X + 2 + Random.Next(width - 3);
-                            triesToPlaceWall++;
-                        } while (!dontContinue &&
-                                  (CurrentMaze.IsCorridor(new MazeCoordinate(newWallX, recUpperleft.Y))
-                                || CurrentMaze.IsCorridor(new MazeCoordinate(newWallX, recDownright.Y))));
-
-                        for (i = 0; i < height; i++)
-                        { // Neue Mauer ziehen
+                    }
+                }
+                else
+                {// Vertical
+                    int newWallX = TryPlaceWallVertical(recUpperleft, recDownright, currentStrategy);
+                    if (newWallX > 0)
+                    {
+                        for (int i = 1; i < height; i++)
+                        { // Create Wall
                             yield return CurrentMaze.SetMazeTypeOnPos(new MazeCoordinate(newWallX, recDownright.Y + i), MazeFieldType.Wall);
                         }
 
-                        // Durchgang erschaffen
+                        // Place corridor
+                        int randY = FindVerticalCorridor(ref recUpperleft, ref recDownright);
+                        yield return CurrentMaze.SetMazeTypeOnPos(new MazeCoordinate(newWallX, randY), MazeFieldType.Corridor);
 
-                        yield return CurrentMaze.SetMazeTypeOnPos(new MazeCoordinate(newWallX, recDownright.Y + 1 + Random.Next(height - 1)), MazeFieldType.Corridor);
+                        //left
+                        MazeCoordinate upperleftNew = new MazeCoordinate(recUpperleft.X, recUpperleft.Y);
+                        MazeCoordinate downrightNew = new MazeCoordinate(newWallX, recDownright.Y);
 
-                        //linkes Rechteck
-                        upperleftNew = new MazeCoordinate(recUpperleft.X, recUpperleft.Y);
-                        downrightNew = new MazeCoordinate(newWallX, recDownright.Y);
-
-                        foreach (var recursiveResult in RekursiveDiv(upperleftNew, downrightNew))
+                        foreach (var recursiveResult in RekursiveDiv(upperleftNew, downrightNew, Random.Next(2) > 0))
                         {
                             yield return recursiveResult;
                         }
 
-                        //rechtes Rechteck
+                        //right
                         upperleftNew = new MazeCoordinate(newWallX, recUpperleft.Y);
                         downrightNew = new MazeCoordinate(recDownright.X, recDownright.Y);
 
-                        foreach (var recursiveResult in RekursiveDiv(upperleftNew, downrightNew))
+                        foreach (var recursiveResult in RekursiveDiv(upperleftNew, downrightNew, Random.Next(2) > 0))
                         {
                             yield return recursiveResult;
-                        }// rechtes Rechteck
-                        break;
+                        }
+                    }
                 }
             }
+        }
+
+        private Strategy CheckWhichStrategyToUse(int width, int height)
+        {
+            int DivisorForStrategyChange = 8;
+
+            if ((CurrentMaze.GetHeight() / DivisorForStrategyChange >= height) ||
+                (CurrentMaze.GetWidth() / DivisorForStrategyChange >= width))
+            {
+                return Strategy.CreateCompactRandomLabyrinth;
+            }
+            else
+            {
+                return Strategy.DividedBigSpacesInTheMiddle;
+            }
+        }
+
+        private int FindVerticalCorridor(ref MazeCoordinate recUpperleft, ref MazeCoordinate recDownright)
+        {
+            int type = Random.Next(2);
+
+            switch (type)
+            {
+                case 1: // top
+                    return recUpperleft.Y - 1;
+
+                default: // bottom
+                    return recDownright.Y + 1;
+            }
+        }
+
+        private int FindHorizontalCorridor(ref MazeCoordinate recUpperleft, ref MazeCoordinate recDownright)
+        {
+            int type = Random.Next(2);
+
+            switch (type)
+            {
+                case 1: // right
+                    return recDownright.X - 1;
+
+                default: // left
+                    return recUpperleft.X + 1;
+            }
+        }
+
+        /// <summary>
+        /// Tries to find a place for the wall in the specified rectangle.
+        /// </summary>
+        /// <returns>An integer which describes the y coordinate where the wall should be placed</returns>
+        private int TryPlaceWallHorizontal(MazeCoordinate recUpperleft, MazeCoordinate recDownright, Strategy strategy)
+        {
+            // first collect all possible coordinates
+            int from = recDownright.Y + 2;
+            int to = recUpperleft.Y - 2;
+            int count = to - from;
+            if (count <= 0) return -1;
+
+            var possibleHorizontalCoordinates = Enumerable.Range(from, to - from).ToList();
+
+            while (possibleHorizontalCoordinates.Count() > 0)
+            {
+                //try them one by one
+                int coordinateToTest = ChooseCoordinateBasedOnStrategy(strategy, possibleHorizontalCoordinates);
+
+                // will it cover a corridor?
+                if (!(CurrentMaze.IsCorridor(new MazeCoordinate(recUpperleft.X, coordinateToTest))
+                  || CurrentMaze.IsCorridor(new MazeCoordinate(recDownright.X, coordinateToTest))))
+                {
+                    // found valid coordinate
+                    return coordinateToTest;
+                }
+                possibleHorizontalCoordinates.Remove(coordinateToTest);
+            }
+
+            // Failed to find a good coordinate.
+            return -1;
+        }
+
+        private int ChooseCoordinateBasedOnStrategy(Strategy strategy, List<int> possibleHorizontalCoordinates)
+        {
+            int coordinateToTest = 0;
+            if (strategy == Strategy.DividedBigSpacesInTheMiddle)
+                coordinateToTest = possibleHorizontalCoordinates.ElementAt(possibleHorizontalCoordinates.Count / 2);
+            else if (strategy == Strategy.CreateCompactRandomLabyrinth)
+                if (Random.Next(2) > 0)
+                {
+                    // left
+                    coordinateToTest = possibleHorizontalCoordinates.First();
+                }
+                else
+                {
+                    // right
+                    coordinateToTest = possibleHorizontalCoordinates.Last();
+                }
+            return coordinateToTest;
+        }
+
+        /// <summary>
+        /// Tries to find a place for the wall in the specified rectangle.
+        /// </summary>
+        /// <returns>An integer which describes the x coordinate where the wall should be placed</returns>
+        private int TryPlaceWallVertical(MazeCoordinate recUpperleft, MazeCoordinate recDownright, Strategy strategy)
+        {
+            // first collect all possible coordinates
+            int from = recUpperleft.X + 2;
+            int to = recDownright.X - 2;
+            int count = to - from;
+            if (count <= 0) return -1;
+
+            var possibleVerticalCoordinates = Enumerable.Range(from, to - from).ToList();
+
+            while (possibleVerticalCoordinates.Count() > 0)
+            {
+                //try them one by one
+                int coordinateToTest = ChooseCoordinateBasedOnStrategy(strategy, possibleVerticalCoordinates);
+
+                // will it cover a corridor?
+                if (!(CurrentMaze.IsCorridor(new MazeCoordinate(coordinateToTest, recUpperleft.Y))
+                   || CurrentMaze.IsCorridor(new MazeCoordinate(coordinateToTest, recDownright.Y))))
+                {
+                    // found valid coordinate
+                    return coordinateToTest;
+                }
+                possibleVerticalCoordinates.Remove(coordinateToTest);
+            }
+
+            // Failed to find a good coordinate.
+            return -1;
         }
     }
 }
