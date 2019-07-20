@@ -39,6 +39,9 @@ MazeImageCreator.CreateMazeImage(maze, "filename", 10, "./");
 <img src="https://raw.githubusercontent.com/z0dd42d1/MazeLib/master/Documentation/BinaryTree.gif"> 
 <p>DepthFirst: </p>
 <img src="https://raw.githubusercontent.com/z0dd42d1/MazeLib/master/Documentation/DepthFirst.gif">
+<p>RecursiveDivision: </p>
+<img src="https://raw.githubusercontent.com/z0dd42d1/MazeLib/master/Documentation/RecursiveDivision.gif">
+
 
 
 Red Tile mark the entrance, green tiles the exit.
