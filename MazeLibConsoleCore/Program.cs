@@ -40,7 +40,7 @@ namespace MazeLibConsoleCore
                 .SetMazeDimensions(60, 60)
                 .Build();
 
-            await MazeImageCreator.CreateMazeAnimationGifAsync(mazeBuilder.GetMazeTransformationSteps(), mazeBuilder.GetInitializedMaze, i.GetName(), 5).ConfigureAwait(false);
+            await MazeImageCreator.CreateMazeAnimationGifAsync(mazeBuilder.GetMazeTransformationSteps(), drawMaze, i.GetName(), 5).ConfigureAwait(false);
 
             MazeImageCreator.CreateMazeImage(maze, i.GetName(), 5, "./");
 
