@@ -22,16 +22,25 @@ namespace MazeLib.TileMapAlgorithms
             return this.GetType().Name;
         }
 
-        public override void InitializeMaze()
+        public override IEnumerable<MazeTransformationStep> InitializeMaze()
         {
             this.CurrentMaze.OverrideAllMazeFields();
             downright = new MazeCoordinate(this.CurrentMaze.GetWidth() - 1, 0);
             upperleft = new MazeCoordinate(0, this.CurrentMaze.GetHeight() - 1);
-            this.CurrentMaze.MakeRectangle(upperleft, downright);
+
+            foreach (var step in this.CurrentMaze.MakeRectangle(upperleft, downright))
+            {
+                yield return step;
+            }
         }
 
         internal override IEnumerable<MazeTransformationStep> InternalGenerateMazeFullSize()
         {
+            foreach (var step in InitializeMaze())
+            {
+                yield return step;
+            }
+
             foreach (var recursiveResult in RekursiveDiv(upperleft, downright, Random.Next(2) > 0))
             {
                 yield return recursiveResult;
@@ -133,10 +142,9 @@ namespace MazeLib.TileMapAlgorithms
 
         private Strategy CheckWhichStrategyToUse(int width, int height)
         {
-            int DivisorForStrategyChange = 8;
-
-            if ((CurrentMaze.GetHeight() / DivisorForStrategyChange >= height) ||
-                (CurrentMaze.GetWidth() / DivisorForStrategyChange >= width))
+            int limitForStrategyChange = 8;
+            if ((limitForStrategyChange >= height) ||
+                (limitForStrategyChange >= width))
             {
                 return Strategy.CreateCompactRandomLabyrinth;
             }

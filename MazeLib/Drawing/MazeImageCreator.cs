@@ -12,7 +12,7 @@ namespace MazeLib
 {
     public static class MazeImageCreator
     {
-        public static Image GetMazeImage(IMaze maze, int tilesize)
+        public static Bitmap GetMazeImage(IMaze maze, int tilesize)
         {
             var image = new Bitmap(tilesize * maze.GetWidth(), tilesize * maze.GetHeight());
 

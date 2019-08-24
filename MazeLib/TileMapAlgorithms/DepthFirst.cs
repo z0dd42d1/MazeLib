@@ -23,6 +23,7 @@ namespace MazeLib.TileMapAlgorithms
 
         internal override IEnumerable<MazeTransformationStep> InternalGenerateMazeFullSize()
         {
+            InitializeMaze();
             entrance = new MazeCoordinate(upperleft.X + 1 + Random.Next(this.CurrentMaze.GetWidth() - 2), upperleft.Y);
 
             pointStack.Push(entrance);
@@ -106,12 +107,13 @@ namespace MazeLib.TileMapAlgorithms
             return true;
         }
 
-        public override void InitializeMaze()
+        public override IEnumerable<MazeTransformationStep> InitializeMaze()
         {
             downright = new MazeCoordinate(CurrentMaze.GetWidth() - 1, 0);
             upperleft = new MazeCoordinate(0, CurrentMaze.GetHeight() - 1);
 
             CurrentMaze.OverrideAllMazeFields(MazeFieldType.Wall);
+            return null;
         }
 
         internal override MazeTransformationStep TryPlaceEntrance()

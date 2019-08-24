@@ -20,8 +20,6 @@ namespace MazeLib.Base
         {
             ValidateMinimumMazeRequirements();
 
-            InitializeMaze();
-
             return InternalGenerateMazeFullSize().ToList();
         }
 
@@ -40,7 +38,7 @@ namespace MazeLib.Base
 
         public void GenerateMaze()
         {
-            InitializeMaze();
+            ValidateMinimumMazeRequirements();
 
             InternalGenerateMazeFullSize().Last();
         }
@@ -65,7 +63,7 @@ namespace MazeLib.Base
             this.CurrentMaze = maze;
         }
 
-        public abstract void InitializeMaze();
+        public abstract IEnumerable<MazeTransformationStep> InitializeMaze();
 
         public abstract string GetName();
 

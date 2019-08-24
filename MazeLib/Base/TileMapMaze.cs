@@ -104,19 +104,19 @@ namespace MazeLib.Base
             }
         }
 
-        internal void MakeRectangle(MazeCoordinate upperleft, MazeCoordinate downright, MazeFieldType defaultType = MazeFieldType.Wall)
+        internal IEnumerable<MazeTransformationStep> MakeRectangle(MazeCoordinate upperleft, MazeCoordinate downright, MazeFieldType defaultType = MazeFieldType.Wall)
         {
             int i;
             for (i = 0; i < this.height; i++)
             { // Left / Right walls
-                this.SetMazeTypeOnPos(upperleft.X, upperleft.Y - i, defaultType);
-                this.SetMazeTypeOnPos(downright.X, upperleft.Y - i, defaultType);
+                yield return this.SetMazeTypeOnPos(upperleft.X, upperleft.Y - i, defaultType);
+                yield return this.SetMazeTypeOnPos(downright.X, upperleft.Y - i, defaultType);
             }
 
             for (i = 0; i < this.width; i++)
             { // Top / Bottom walls
-                this.SetMazeTypeOnPos(upperleft.X + i, upperleft.Y, defaultType);
-                this.SetMazeTypeOnPos(upperleft.X + i, downright.Y, defaultType);
+                yield return this.SetMazeTypeOnPos(upperleft.X + i, upperleft.Y, defaultType);
+                yield return this.SetMazeTypeOnPos(upperleft.X + i, downright.Y, defaultType);
             }
         }
 

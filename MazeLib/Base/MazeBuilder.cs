@@ -13,21 +13,15 @@ namespace MazeLib.Base
         private int width;
         private int height;
         private bool recordMazeTranformationSteps = false;
-        private IList<MazeTransformationStep> mazeTransformationSteps;
+        private HashSet<MazeTransformationStep> mazeTransformationSteps;
 
-        public IList<MazeTransformationStep> GetMazeTransformationSteps()
+        public HashSet<MazeTransformationStep> GetMazeTransformationSteps()
         {
+            // TODO this is kinda shitty
+            if (!recordMazeTranformationSteps)
+                throw new Exception("MazeTransformation Steps not recorded, use the RecordMazeTransformationSteps() method on the builder.");
+
             return mazeTransformationSteps;
-        }
-
-        public IMaze GetInitializedMaze
-        {
-            get
-            {
-                // TODO Maybe turn this into method and return new object?
-                algo.InitializeMaze();
-                return algo.GetMaze();
-            }
         }
 
         public MazeBuilder()
@@ -71,7 +65,7 @@ namespace MazeLib.Base
 
             if (recordMazeTranformationSteps)
             {
-                this.mazeTransformationSteps = this.algo.GenerateMazeWithTranformationList();
+                this.mazeTransformationSteps = new HashSet<MazeTransformationStep>(this.algo.GenerateMazeWithTranformationList());
             }
             else
             {

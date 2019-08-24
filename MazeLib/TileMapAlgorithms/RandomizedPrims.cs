@@ -26,6 +26,8 @@ namespace MazeLib.TileMapAlgorithms
 
         internal override IEnumerable<MazeTransformationStep> InternalGenerateMazeFullSize()
         {
+            InitializeMaze();
+
             VisitedList = new HashSet<MazeCoordinate>();
             WallsList = new HashSet<MazeCoordinate>();
 
@@ -72,9 +74,10 @@ namespace MazeLib.TileMapAlgorithms
             return this.GetType().Name;
         }
 
-        public override void InitializeMaze()
+        public override IEnumerable<MazeTransformationStep> InitializeMaze()
         {
             CurrentMaze.OverrideAllMazeFields(MazeFieldType.Wall);
+            return null;
         }
 
         private void addSourroundingWallsToWallList(MazeCoordinate target)

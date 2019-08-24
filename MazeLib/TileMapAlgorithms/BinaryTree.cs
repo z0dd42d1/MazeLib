@@ -14,6 +14,10 @@ namespace MazeLib.TileMapAlgorithms
 
         internal override IEnumerable<MazeTransformationStep> InternalGenerateMazeFullSize()
         {
+            foreach (var step in InitializeMaze())
+            {
+                yield return step;
+            }
             /*
              * In the wall added version, for each vertex add a wall segment leading down or right, but not both.
              */
@@ -61,12 +65,16 @@ namespace MazeLib.TileMapAlgorithms
             return this.GetType().Name;
         }
 
-        public override void InitializeMaze()
+        public override IEnumerable<MazeTransformationStep> InitializeMaze()
         {
             this.CurrentMaze.OverrideAllMazeFields();
             downright = new MazeCoordinate(this.CurrentMaze.GetWidth() - 1, 0);
             upperleft = new MazeCoordinate(0, this.CurrentMaze.GetHeight() - 1);
-            this.CurrentMaze.MakeRectangle(upperleft, downright);
+
+            foreach (var step in this.CurrentMaze.MakeRectangle(upperleft, downright))
+            {
+                yield return step;
+            }
         }
 
         internal override MazeTransformationStep TryPlaceEntrance()

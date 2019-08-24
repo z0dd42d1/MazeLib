@@ -1,11 +1,14 @@
 ﻿using MazeLib.Base;
 using MazeLib.TileMapAlgorithms;
+using MazeLibTests.Base;
+using Serilog;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace MazeLibTests
 {
@@ -20,10 +23,24 @@ namespace MazeLibTests
 
             var mazes = KnownMazesTypes.GetAllMazeAlgos().ToArray<object>();
 
+            var dimensonList = new List<(int, int)>()
+            {
+                (10,10), // even, even
+                (11,11), // odd, odd
+                (50,80), // even, even(bigger)
+                (80,50), // even(bigger), even
+                (17,10), // odd(bigger), even
+                (10,17), // even, odd(bigger)
+            };
+
             foreach (IMazeGenAlgorithm algorithm in mazes)
             {
-                list.Add(new object[] { algorithm });
+                foreach ((int, int) d in dimensonList)
+                {
+                    list.Add(new object[] { algorithm, d });
+                }
             }
+
             return list;
         }
 
@@ -32,15 +49,21 @@ namespace MazeLibTests
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 
-    public class TileMapAlgorithmsTests
+    public class TileMapAlgorithmsTests : UnittestSerilogBase
     {
+        public TileMapAlgorithmsTests(ITestOutputHelper output) : base(output)
+        {
+        }
+
         [Theory]
         [ClassData(typeof(TestDataGeneratorCollection))]
-        public void GenerateFullSizeMaze_GeneratesMaze_10x10(IMazeGenAlgorithm mazeGenAlgorithm)
+        public void GenerateFullSizeMaze_GeneratesMaze_DoesNotThrow(IMazeGenAlgorithm mazeGenAlgorithm, (int, int) dimensions)
         {
+            Log.Logger.Information($"Test combination: {mazeGenAlgorithm?.GetName()},x={dimensions.Item1},y={dimensions.Item2}");
+
             var mazeBuilder = new MazeBuilder()
                 .SetMazeAlgorithm(mazeGenAlgorithm)
-                .SetMazeDimensions(10, 10);
+                .SetMazeDimensions(dimensions.Item1, dimensions.Item2);
 
             Assert.NotNull(mazeBuilder.Build());
             //TODO Test maze is solvable
@@ -48,20 +71,10 @@ namespace MazeLibTests
 
         [Theory]
         [ClassData(typeof(TestDataGeneratorCollection))]
-        public void GenerateFullSizeMaze_GeneratesMaze_100x100(IMazeGenAlgorithm mazeGenAlgorithm)
+        public void GenerateFullSizeMaze_WithRecordMazeTransformationStepsTrue_MazeTransformationStepsContainOneExitAndEntry(IMazeGenAlgorithm mazeGenAlgorithm, (int, int) dimensions)
         {
-            var mazeBuilder = new MazeBuilder()
-                .SetMazeAlgorithm(mazeGenAlgorithm)
-                .SetMazeDimensions(100, 100);
+            Log.Logger.Information($"Test combination: {mazeGenAlgorithm?.GetName()},x={dimensions.Item1},y={dimensions.Item2}");
 
-            Assert.NotNull(mazeBuilder.Build());
-            //TODO Test maze is solvable
-        }
-
-        [Theory]
-        [ClassData(typeof(TestDataGeneratorCollection))]
-        public void GenerateFullSizeMaze_WithRecordMazeTransformationStepsTrue_MazeTransformationStepsContainOneExitAndEntry(IMazeGenAlgorithm mazeGenAlgorithm)
-        {
             var mazeBuilder = new MazeBuilder()
                 .SetMazeAlgorithm(mazeGenAlgorithm)
                 .RecordMazeTransformationSteps(true)

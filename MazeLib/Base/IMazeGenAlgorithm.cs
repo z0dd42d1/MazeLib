@@ -22,7 +22,7 @@ namespace MazeLib.Base
         /// <summary>
         /// Initialized the maze for the generation algorithm
         /// </summary>
-        void InitializeMaze();
+        IEnumerable<MazeTransformationStep> InitializeMaze();
 
         /// <summary>
         /// Sets the maze object which will be transformed by the algorithm.
