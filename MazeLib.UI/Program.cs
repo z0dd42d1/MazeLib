@@ -1,5 +1,6 @@
 ﻿using System;
 using Avalonia;
+using Avalonia.Controls.PanAndZoom;
 using Avalonia.Logging.Serilog;
 using MazeLib.UI.ViewModels;
 using MazeLib.UI.Views;
@@ -28,6 +29,8 @@ namespace MazeLib.UI
             {
                 DataContext = new MainWindowViewModel(),
             };
+
+            new ZoomBorder();
 
             app.Run(window);
         }
