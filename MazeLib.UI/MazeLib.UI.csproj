@@ -14,10 +14,10 @@
     <AvaloniaResource Include="Assets\*" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.8.1" />
-    <PackageReference Include="Avalonia.Controls.PanAndZoom" Version="2.1.0" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.8.1" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="0.8.1" />
+    <PackageReference Include="Avalonia" Version="0.8.2" />
+    <PackageReference Include="Avalonia.Controls.PanAndZoom" Version="2.2.1" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.8.2" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="0.8.2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MazeLib\MazeLib.csproj" />
