@@ -8,13 +8,18 @@ namespace MazeLib.Base
 {
     public abstract class MazeGenAlgorithmBase : IMazeGenAlgorithm
     {
-        private Random random = new Random();
+        private Random random;
+        
         private TileMapMaze currentMaze;
 
         protected Random Random { get => random; set => random = value; }
         protected TileMapMaze CurrentMaze { get => currentMaze; set => currentMaze = value; }
 
         internal abstract IEnumerable<MazeTransformationStep> InternalGenerateMazeFullSize();
+        
+        public MazeGenAlgorithmBase(int randomSeed){
+            this.random = new Random(randomSeed == -1 ? Environment.TickCount : randomSeed);
+        }
 
         public IList<MazeTransformationStep> GenerateMazeWithTranformationList()
         {

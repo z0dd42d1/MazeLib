@@ -11,6 +11,10 @@ namespace MazeLib.TileMapAlgorithms
     {
         private MazeCoordinate downright;
         private MazeCoordinate upperleft;
+        
+        public BinaryTree(int randomSeed = -1) : base(randomSeed)
+        {
+        }
 
         internal override IEnumerable<MazeTransformationStep> InternalGenerateMazeFullSize()
         {

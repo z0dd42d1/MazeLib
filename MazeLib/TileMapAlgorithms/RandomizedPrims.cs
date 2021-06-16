@@ -23,6 +23,10 @@ namespace MazeLib.TileMapAlgorithms
 
         private HashSet<MazeCoordinate> VisitedList;
         private HashSet<MazeCoordinate> WallsList;
+        
+        public RandomizedPrims(int randomSeed = -1) : base(randomSeed)
+        {
+        }
 
         internal override IEnumerable<MazeTransformationStep> InternalGenerateMazeFullSize()
         {
