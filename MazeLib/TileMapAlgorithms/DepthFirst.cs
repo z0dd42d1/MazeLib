@@ -15,6 +15,10 @@ namespace MazeLib.TileMapAlgorithms
         private List<MazeCoordinate> possibleWays = new List<MazeCoordinate>();
 
         private MazeCoordinate entrance;
+        
+        public DepthFirst(int randomSeed = -1) : base(randomSeed)
+        {
+        }
 
         public override string GetName()
         {

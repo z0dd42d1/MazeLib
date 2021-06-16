@@ -10,6 +10,10 @@ namespace MazeLib.TileMapAlgorithms
     {
         private MazeCoordinate downright;
         private MazeCoordinate upperleft;
+        
+        public RecursiveDivision(int randomSeed = -1) : base(randomSeed)
+        {
+        }
 
         private enum Strategy
         {
